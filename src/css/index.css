@@ -1,0 +1,354 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- Added by Developer ---- */
+
+/* #region Font faces */
+@font-face {
+  font-family: 'montExtraLight';
+  src: url('./assets/fonts/mont/mont-extra-light.otf');
+}
+
+@font-face {
+  font-family: 'montRegular';
+  src: url('./assets/fonts/mont/mont-regular.ttf');
+}
+
+@font-face {
+  font-family: 'montSemiBold';
+  src: url('./assets/fonts/mont/mont-semi-bold.ttf');
+}
+
+@font-face {
+  font-family: 'montHeavy';
+  src: url('./assets/fonts/mont/mont-heavy.otf');
+}
+
+@font-face {
+  font-family: 'montBold';
+  src: url('./assets/fonts/mont/mont-bold.ttf');
+}
+
+/* Roboto */
+@font-face {
+  font-family: 'robotoBlack';
+  src: url('./assets/fonts/roboto/roboto-black.ttf');
+}
+
+@font-face {
+  font-family: 'robotoBold';
+  src: url('./assets/fonts/roboto/roboto-bold.ttf');
+}
+
+@font-face {
+  font-family: 'robotoMedium';
+  src: url('./assets/fonts/roboto/roboto-medium.ttf');
+}
+
+@font-face {
+  font-family: 'robotoRegular';
+  src: url('./assets/fonts/roboto/roboto-regular.ttf');
+}
+
+@font-face {
+  font-family: 'robotoLight';
+  src: url('./assets/fonts/roboto/roboto-light.ttf');
+}
+/* #endregion  */
+
+/* #region variables */
+:root {
+  --primary: #226568;
+  --secondary: #fffff4;
+  --danger: #ad181b;
+  --white: #ffffff;
+  --light: #f4f5f8;
+  --dark: #222428;
+  --medium: #666666;
+  --tertiary: #3a3653;
+  --ShadowedPlum: #3a36538a;
+}
+/* #endregion  */
+
+/* #region Global */
+body {
+  font-family: 'RobotoMedium', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.z-text-ellipsis {
+  @apply overflow-hidden whitespace-nowrap text-ellipsis;
+}
+
+.z-arrow-right-clip {
+  clip-path: polygon(0% 0%, 89% 0, 100% 50%, 89% 100%, 0% 100%);
+}
+/* #endregion */
+
+/* #region Global Components */
+@keyframes modalVisible {
+  from {
+    opacity: 0;
+    z-index: -10;
+  }
+  to {
+    opacity: 1;
+    z-index: 100;
+  }
+}
+
+.z-modal-visible {
+  animation: modalVisible 75ms ease-out !important;
+  -webkit-animation: modalVisible 75ms ease-out !important;
+}
+
+@keyframes modalHidden {
+  from {
+    opacity: 1;
+    z-index: 100;
+  }
+  to {
+    opacity: 0;
+    z-index: -10;
+  }
+}
+
+.z-modal-hidden {
+  animation: modalHidden 700ms ease-out;
+  -webkit-animation: modalHidden 700ms ease-out;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* #endregion */
+
+/* #region Fonts family */
+.font-mont-extra-light {
+  font-family: 'montExtraLight', sans-serif;
+}
+
+.font-mont-heavy {
+  font-family: 'montHeavy', sans-serif;
+}
+
+.font-mont-regular {
+  font-family: 'montRegular', sans-serif;
+}
+
+.font-mont-semi-bold {
+  font-family: 'montSemiBold', sans-serif;
+}
+
+.font-mont-bold {
+  font-family: 'montBold', sans-serif;
+}
+
+/* Roboto */
+.font-roboto-black {
+  font-family: 'robotoBlack', sans-serif;
+}
+
+.font-roboto-bold {
+  font-family: 'robotoBold', sans-serif;
+}
+
+.font-roboto-medium {
+  font-family: 'robotoMedium', sans-serif;
+}
+
+.font-roboto-regular {
+  font-family: 'robotoRegular', sans-serif;
+}
+
+.font-roboto-light {
+  font-family: 'robotoLight', sans-serif;
+}
+/* #endregion */
+
+/* #region Input & Select styling */
+.z-input-group .floating-label,
+.z-input-group input:focus ~ .z-input-label,
+.z-input-group textarea:focus ~ .z-input-label {
+  top: 1rem;
+  font-size: 0.75rem !important;
+}
+/* .z-input-group textarea::-webkit-resizer {
+  display: none;
+} */
+.z-react-select__control,
+.z-rs-btn__control {
+  height: 100%;
+  background-color: transparent !important;
+}
+
+.z-react-select__control {
+  padding-top: 9px !important;
+  border-color: transparent !important;
+  border: none !important;
+}
+
+.z-rs-btn__control {
+  border-color: var(--primary) !important;
+  padding: 1px 0.875rem;
+  border-width: 2px !important;
+}
+
+.z-react-select__value-container {
+  padding-top: 0.725rem !important;
+  padding-left: 0.8rem !important;
+}
+
+.z-react-select__indicator-separator,
+.z-rs-btn__indicator-separator {
+  display: none;
+}
+.z-react-select__indicator {
+  padding: 0rem !important;
+  padding-right: 1rem !important;
+}
+
+.z-react-select__indicator svg {
+  width: 1.375rem;
+  height: 1.375rem;
+  color: black;
+}
+
+.z-rs-btn__placeholder,
+.z-rs-btn__input-container,
+.z-rs-btn__single-value {
+  color: var(--primary) !important;
+  font-family: 'montHeavy', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.z-rs-btn__indicator {
+  padding-left: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.z-rs-btn__indicator svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--primary) !important;
+}
+
+/* Button view */
+
+/* #endregion */
+
+/* #region According */
+.z-ru-accordion-root {
+  @apply rounded-md;
+}
+
+.z-ru-accordion-item {
+  @apply mt-px overflow-hidden;
+}
+
+.z-ru-accordion-item:first-child {
+  @apply mt-0 rounded-t-md;
+}
+
+.z-ru-accordion-item:last-child {
+  @apply rounded-b-md;
+}
+
+.z-ru-accordion-item:focus-within {
+  @apply relative z-10;
+}
+
+.z-ru-accordion-header {
+  @apply flex;
+}
+
+.z-ru-accordion-trigger {
+  @apply font-[inherit] bg-transparent flex-1 flex items-center justify-between text-[15px] leading-none text-lightDark font-medium bg-white px-5 py-2;
+}
+
+.z-ru-accordion-trigger[data-state='open'] {
+  @apply text-primary;
+}
+
+.z-ru-accordion-trigger:hover {
+  @apply bg-light/30;
+}
+
+.z-ru-accordion-content {
+  @apply overflow-hidden text-[15px] text-lightDark bg-light;
+}
+
+.z-ru-accordion-content[data-state='open'] {
+  animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  -webkit-animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+.z-ru-accordion-content[data-state='closed'] {
+  animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  -webkit-animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.z-ru-accordion-content-text {
+  @apply px-5 py-1;
+}
+
+.z-ru-accordion-content-chevron {
+  @apply text-lightDark;
+  transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  -webkit-transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  -moz-transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  -ms-transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  -o-transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.z-ru-accordion-trigger[data-state='open'] > .z-ru-accordion-content-chevron {
+  @apply rotate-180 text-primary;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+/* #endregion */
+
+.z-text-size-point-8125rem {
+  font-size: 0.8125rem !important;
+}
+
+.z-profile-item {
+  @apply leading-[210%] text-[0.8125rem] font-black font-mont-heavy uppercase tracking-[0.78px] text-primary p-[6px_11.9px_0px_11.9px] cursor-pointer;
+}

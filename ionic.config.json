@@ -1,0 +1,7 @@
+{
+  "name": "job-tracker-app-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
