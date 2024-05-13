@@ -32,6 +32,9 @@ interface ZRUCheckboxI {
 }
 // #endregion
 
+/**
+ * A customized Radix Checkbox component.
+ */
 const ZRUCheckbox: React.FC<ZRUCheckboxI> = (props) => {
   return <Checkbox {...props} />;
 };

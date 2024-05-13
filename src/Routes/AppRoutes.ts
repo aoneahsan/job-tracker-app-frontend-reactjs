@@ -27,7 +27,22 @@ const AppRoutesE = {
     },
     jobView: {
       path: `/job-tracker/${routeParams.jobId}`,
-      completePath: `${AppRoutesCommonPath.dashboard}/job-tracker/${routeParams.jobId}`
+      completePath: `${AppRoutesCommonPath.dashboard}/job-tracker/${routeParams.jobId}`,
+
+      notes: {
+        path: '/notes',
+        completePath: `${AppRoutesCommonPath.dashboard}/job-tracker/${routeParams.jobId}/notes`,
+      },
+
+      attachments: {
+        path: '/attachments',
+        completePath: `${AppRoutesCommonPath.dashboard}/job-tracker/${routeParams.jobId}/attachments`,
+      },
+
+      contacts: {
+        path: '/contacts',
+        completePath: `${AppRoutesCommonPath.dashboard}/job-tracker/${routeParams.jobId}/contacts`,
+      }
     }
   },
 

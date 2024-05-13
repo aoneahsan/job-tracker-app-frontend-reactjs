@@ -1,10 +1,10 @@
 // #region ---- Core Imports ----
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 // #endregion
 
 // #region ---- Packages Imports ----
-import { Outlet } from '@tanstack/react-router';
+import { Outlet, useMatchRoute } from '@tanstack/react-router';
 
 // #endregion
 
@@ -12,6 +12,7 @@ import { Outlet } from '@tanstack/react-router';
 import { ZRUBox, ZRUText } from '@/components/RadixUI';
 import { ZPage } from '@/components/Elements';
 import constants from '@/utils/constants';
+import { useZNavigate } from '@/hooks/navigation.hook';
 
 // #endregion
 
@@ -36,10 +37,17 @@ import {
   ZSearchSvg,
   ZQuestionCircleIcon
 } from '@/assets';
+import { AppRoutes } from '@/Routes/AppRoutes';
+import { ZClassNames } from '@/Packages/ClassNames';
 
 // #endregion
 
 const Dashboard: React.FC = () => {
+  // #region Hooks
+  const navigate = useZNavigate();
+  const matchRoute = useMatchRoute();
+  // #endregion
+
   // #region Constants
   const pageHelmet = useMemo(
     () => ({
@@ -47,6 +55,37 @@ const Dashboard: React.FC = () => {
     }),
     []
   );
+  // #endregion
+
+  // #region Functions
+  const jobTrackerPage = useCallback(() => {
+    navigate({
+      to: AppRoutes.dashboardSub.jobTracker.completePath
+    });
+  }, []);
+
+  // #endregion
+
+  // #region Routes Matches
+  const isJobTrackerPage = matchRoute({
+    to: AppRoutes.dashboardSub.jobTracker.completePath
+  });
+
+  const isJobTrackerViewPage = matchRoute({
+    to: AppRoutes.dashboardSub.jobView.completePath
+  });
+
+  const isJobTrackerViewNotesPage = matchRoute({
+    to: AppRoutes.dashboardSub.jobView.notes.completePath
+  });
+
+  const isJobTrackerViewContactsPage = matchRoute({
+    to: AppRoutes.dashboardSub.jobView.contacts.completePath
+  });
+
+  const isJobTrackerViewAttachmentsPage = matchRoute({
+    to: AppRoutes.dashboardSub.jobView.attachments.completePath
+  });
   // #endregion
 
   return (
@@ -83,8 +122,19 @@ const Dashboard: React.FC = () => {
             </li>
 
             {/* Job Tracker */}
-            <li className='group/item'>
-              <ZRUBox className='flex items-center justify-center p-1 transition-all duration-500 bg-transparent rounded-full w-9 h-9 group-hover/item:bg-light/20'>
+            <li className='group/item' onClick={jobTrackerPage}>
+              <ZRUBox
+                className={ZClassNames({
+                  'flex items-center justify-center p-1 transition-all duration-500 bg-transparent rounded-full w-9 h-9 group-hover/item:bg-light/20':
+                    true,
+                  'bg-white text-primary group-hover/item:bg-white':
+                    isJobTrackerPage ||
+                    isJobTrackerViewPage ||
+                    isJobTrackerViewNotesPage ||
+                    isJobTrackerViewContactsPage ||
+                    isJobTrackerViewAttachmentsPage
+                })}
+              >
                 <ZStatsChartIconOutlineIcon className='w-[90%] h-[90%]' />
               </ZRUBox>
               <ZRUText className='text-base font-medium mt-[3px]'>

@@ -96,6 +96,39 @@ input[type='number'] {
 .z-arrow-right-clip {
   clip-path: polygon(0% 0%, 89% 0, 100% 50%, 89% 100%, 0% 100%);
 }
+
+.z-blur {
+  @apply pointer-events-none blur-sm;
+}
+
+/* Scrollbar */
+.zaions_pretty_scrollbar::-webkit-scrollbar {
+  height: 8px;
+  width: 6px; /* unless ahsan ask for a scroll for a different width this will be the default width for all scroll bars in the project */
+}
+
+.zaions_pretty_scrollbar::-webkit-scrollbar-track {
+  background-color: rgba(var(--ion-color-medium-rgb), 0.25);
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.zaions_pretty_scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(var(--ion-color-light-rgb));
+  border-radius: 5px;
+  transition: background-color 0.5s ease;
+  -webkit-transition: background-color 0.5s ease;
+  -moz-transition: background-color 0.5s ease;
+  -ms-transition: background-color 0.5s ease;
+  -o-transition: background-color 0.5s ease;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
 /* #endregion */
 
 /* #region Global Components */
@@ -254,8 +287,12 @@ input[type='number'] {
   height: 1.75rem;
   color: var(--primary) !important;
 }
-
-/* Button view */
+.z-date-input input {
+  @apply relative;
+}
+.z-date-input input[type='date']::-webkit-calendar-picker-indicator {
+  @apply !absolute right-2;
+}
 
 /* #endregion */
 

@@ -1,9 +1,10 @@
 // #region ---- Core Imports ----
-import React from 'react';
+import React, { useCallback } from 'react';
 
 // #endregion
 
 // #region ---- Packages Imports ----
+import { Outlet, useMatchRoute } from '@tanstack/react-router';
 
 // #endregion
 
@@ -18,9 +19,14 @@ import {
   ZRUCheckbox,
   ZRUHeading,
   ZRUInput,
+  ZRUProgress,
   ZRUScrollArea,
-  ZRUText
+  ZRUSwitch,
+  ZRUText,
+  ZRUTextArea
 } from '@/components/RadixUI';
+import constants from '@/utils/constants';
+import { useZNavigate } from '@/hooks/navigation.hook';
 
 // #endregion
 
@@ -28,6 +34,8 @@ import {
 import {
   ZRUColorE,
   ZRUHeadingAsE,
+  ZRUScrollbarTypeE,
+  ZRUScrollbarsE,
   ZRUTextAsE,
   ZRUVariantE
 } from '@/types/radixUI/index.type';
@@ -50,16 +58,68 @@ import {
   ZAttachmentIcon,
   ZContactsBookIcon,
   ZMailOutlineIcon,
-  ZCheckboxOutline
+  ZCheckboxOutlineIcon
 } from '@/assets';
+import { AppRoutes } from '@/Routes/AppRoutes';
 
 // #endregion
 
 const JobView: React.FC = () => {
+  // #region Hooks
+  const navigate = useZNavigate();
+  const matchRoute = useMatchRoute();
+  // #endregion
+
+  // #region Functions
+  const addNotesRoute = useCallback(() => {
+    navigate({
+      to: AppRoutes.dashboardSub.jobView.notes.completePath,
+      params: {
+        jobId: '123' // will be replace with original id when backend connected
+      }
+    });
+  }, []);
+
+  const addAttachmentsRoute = useCallback(() => {
+    navigate({
+      to: AppRoutes.dashboardSub.jobView.attachments.completePath,
+      params: {
+        jobId: '123' // will be replace with original id when backend connected
+      }
+    });
+  }, []);
+
+  const addContactsRoute = useCallback(() => {
+    navigate({
+      to: AppRoutes.dashboardSub.jobView.contacts.completePath,
+      params: {
+        jobId: '123' // will be replace with original id when backend connected
+      }
+    });
+  }, []);
+
+  //  #endregion
+
+  // #region Routes Matches
+  const isJobTrackerViewNotesPage = matchRoute({
+    to: AppRoutes.dashboardSub.jobView.notes.completePath
+  });
+
+  const isJobTrackerViewContactsPage = matchRoute({
+    to: AppRoutes.dashboardSub.jobView.contacts.completePath
+  });
+
+  const isJobTrackerViewAttachmentsPage = matchRoute({
+    to: AppRoutes.dashboardSub.jobView.attachments.completePath
+  });
+  console.log({ isJobTrackerViewNotesPage });
+  // #en
+  // #endregion
+
   return (
     <ZRUBox className='flex items-start w-full h-full'>
       {/* Side bar/Jobs list */}
-      <ZRUBox className='w-[17.5rem] border-e border-gray-100 h-full'>
+      <ZRUBox className='w-[17.5rem] border-e border-gray-100 h-full ps-5'>
         <ZRUText
           as={ZRUTextAsE.div}
           className='p-2 font-medium border-b border-tertiary/40 bg-warning/20'
@@ -102,7 +162,7 @@ const JobView: React.FC = () => {
 
         <ZRUBox className='flex-1 h-full'>
           {/* Info */}
-          <ZRUBox className='flex items-start *:flex-1 p-3'>
+          <ZRUBox className='flex items-start *:flex-1 py-3 px-5'>
             <ZRUBox className='flex items-start gap-2 p-px transition-all duration-300 border border-transparent rounded-sm group hover:border-warning-shade/50'>
               <ZRUBox className='flex-1'>
                 <ZRUHeading className='text-3xl tracking-wide'>
@@ -158,7 +218,7 @@ const JobView: React.FC = () => {
           </ZRUBox>
 
           {/* Status progress bar */}
-          <ZRUBox className='flex items-center *:py-2 mt-5 *:flex-1 *:flex *:items-center *:justify-center *:bg-tertiary/60 gap-2 *:rounded-md overflow-hidden *:text-light/90 *:font-medium *:cursor-pointer p-3'>
+          <ZRUBox className='flex items-center *:py-2 mt-5 *:flex-1 *:flex *:items-center *:justify-center *:bg-tertiary/60 gap-2 *:rounded-md overflow-hidden *:text-light/90 *:font-medium *:cursor-pointer py-3 px-5'>
             <ZRUBox className='!bg-success-shade text-light/90 z-arrow-right-clip'>
               <ZRUText className='mx-auto'>Bookmarked</ZRUText>
               <ZCheckIcon className='ms-auto me-4' />
@@ -196,7 +256,7 @@ const JobView: React.FC = () => {
           </ZRUBox>
 
           {/* Guidance */}
-          <ZRUAccordingGroup type='multiple' className='p-3 mt-5'>
+          <ZRUAccordingGroup type='multiple' className='px-5 py-3 mt-5'>
             <ZRUAccordionItem value='guidance'>
               <ZRUAccordionTrigger className='!bg-success-dark/40 !text-success-dark'>
                 <ZRUText className='flex items-center'>
@@ -239,25 +299,38 @@ const JobView: React.FC = () => {
           <ZRUBox className='flex items-center *:me-5 *:font-medium px-6 py-4 mt-2 border-t border-gray-100'>
             {/* Notes */}
             <ZRUButton
-              variant={ZRUVariantE.ghost}
               size='3'
               className='text-success-dark'
+              onClick={addNotesRoute}
+              variant={
+                isJobTrackerViewNotesPage ? ZRUVariantE.soft : ZRUVariantE.ghost
+              }
             >
               <ZNotesIcon className='w-5 h-5' /> Notes
             </ZRUButton>
 
             <ZRUButton
-              variant={ZRUVariantE.ghost}
               size='3'
               className='text-success-dark'
+              onClick={addAttachmentsRoute}
+              variant={
+                isJobTrackerViewAttachmentsPage
+                  ? ZRUVariantE.soft
+                  : ZRUVariantE.ghost
+              }
             >
               <ZAttachmentIcon className='w-5 h-5' /> Attachments
             </ZRUButton>
 
             <ZRUButton
-              variant={ZRUVariantE.ghost}
               size='3'
               className='text-success-dark'
+              onClick={addContactsRoute}
+              variant={
+                isJobTrackerViewContactsPage
+                  ? ZRUVariantE.soft
+                  : ZRUVariantE.ghost
+              }
             >
               <ZContactsBookIcon className='w-5 h-5' /> Contacts
             </ZRUButton>
@@ -275,32 +348,216 @@ const JobView: React.FC = () => {
               size='3'
               className='text-success-dark'
             >
-              <ZCheckboxOutline className='w-5 h-5' /> Check List
+              <ZCheckboxOutlineIcon className='w-5 h-5' /> Check List
             </ZRUButton>
           </ZRUBox>
 
           {/* Job info */}
-          <ZRUBox className='border-t border-gray-100'>
-            <ZRUScrollArea>
-              <ZRUAccordingGroup type='multiple'>
-                <ZRUAccordionItem value='date' className='!rounded-none'>
-                  <ZRUAccordionTrigger className='py-4 border-b border-body/30'>
-                    <ZRUText className='block text-xl text-tertiary'>
-                      Dates
-                    </ZRUText>
-                  </ZRUAccordionTrigger>
+          <ZRUBox className='flex items-start border-t border-gray-100'>
+            <ZRUScrollArea
+              type={ZRUScrollbarTypeE.auto}
+              scrollbars={ZRUScrollbarsE.vertical}
+              className='flex-1'
+            >
+              <ZRUBox className='h-[33rem] me-2'>
+                {/* Date */}
+                <ZRUText className='block px-4 py-3 text-xl font-medium border-b border-tertiary/20 text-tertiary'>
+                  Dates
+                </ZRUText>
 
-                  <ZRUAccordionContent className='p-3'>
-                    <ZRUBox className='flex items-center gap-2 *:flex-1'>
-                      <ZRUInput type='date' className='' />
-                      <ZRUInput type='date' />
-                      <ZRUInput type='date' />
-                      <ZRUInput type='date' />
+                <ZRUBox className='flex items-center gap-2 *:flex-1 px-4 pt-4 pb-6 border-b border-tertiary/20'>
+                  <ZRUInput type='date' />
+                  <ZRUInput type='date' />
+                  <ZRUInput type='date' />
+                  <ZRUInput type='date' />
+                </ZRUBox>
+
+                {/* Summary */}
+                <ZRUBox className='flex items-center justify-between w-full px-4 py-3 border-b border-tertiary/20 me-3'>
+                  <ZRUText className='block text-xl font-medium text-tertiary '>
+                    Summary
+                  </ZRUText>
+
+                  <ZRUBox className='flex items-center gap-2 px-3 py-1 w-max'>
+                    <ZRUSwitch />
+                    <ZRUText className='font-medium'>
+                      Show full job description
+                    </ZRUText>
+                  </ZRUBox>
+                </ZRUBox>
+
+                <ZRUBox className='flex items-start gap-1 py-2 *:flex-1 px-5'>
+                  <ZRUBox>
+                    {/* About the Job */}
+                    <ZRUHeading as={ZRUHeadingAsE.h5} className='text-[1.1rem]'>
+                      About the Job
+                    </ZRUHeading>
+
+                    <ZRUText className='text-[.9rem] font-medium'>
+                      Xtecsoft is looking for a React Native Developer with 2 to
+                      4 years of experience in front-end development. The
+                      location for this position is Gulshan e Iqbal Block 7,
+                      Karachi.
+                    </ZRUText>
+
+                    {/* Job Responsibilities */}
+                    <ZRUHeading
+                      as={ZRUHeadingAsE.h5}
+                      className='text-[1.1rem] mt-3'
+                    >
+                      Job Responsibilities
+                    </ZRUHeading>
+
+                    <ul className='list-disc *:my-1 ms-4 *:text-[.9rem]'>
+                      <li>Develop and maintain React Native applications</li>
+
+                      <li>
+                        Implement UI/UX designs using React JS and Material UI
+                      </li>
+                    </ul>
+
+                    {/* Requirements */}
+                    <ZRUHeading
+                      as={ZRUHeadingAsE.h5}
+                      className='text-[1.1rem] mt-3'
+                    >
+                      Requirements
+                    </ZRUHeading>
+
+                    <ul className='list-disc *:my-1 ms-4 *:text-[.9rem]'>
+                      <li>Experience with React JS and Material UI</li>
+
+                      <li>Strong knowledge of JavaScript fundamentals</li>
+                    </ul>
+                  </ZRUBox>
+
+                  <ZRUBox>
+                    {/* Hard Skills */}
+                    <ZRUBox>
+                      <ZRUBox className='flex items-center gap-2 py-1 w-max'>
+                        <ZRUSwitch />
+                        <ZRUText className='font-semibold'>Hard Skills</ZRUText>
+                      </ZRUBox>
+
+                      <ul className='*:py-2 mt-3 ps-1 *:flex *:items-center *:justify-between *:border-t *:border-tertiary/40 last-of-type:*:border-b'>
+                        <li>
+                          <ZRUText className='font-medium cursor-pointer ps-1 hover:underline'>
+                            React
+                          </ZRUText>
+
+                          <ZRUBox className='w-[40%] flex items-center gap-1'>
+                            <ZRUText className='font-medium'>4</ZRUText>
+                            <ZRUProgress
+                              value={100}
+                              size='3'
+                              color={ZRUColorE.green}
+                            />
+                          </ZRUBox>
+                        </li>
+
+                        <li>
+                          <ZRUText className='font-medium cursor-pointer ps-1 hover:underline'>
+                            Javascript
+                          </ZRUText>
+
+                          <ZRUBox className='w-[40%] flex items-center gap-1'>
+                            <ZRUText className='font-medium'>4</ZRUText>
+                            <ZRUProgress
+                              value={100}
+                              size='3'
+                              color={ZRUColorE.green}
+                            />
+                          </ZRUBox>
+                        </li>
+
+                        {[...Array(10)].map((el, index) => {
+                          return (
+                            <li key={index}>
+                              <ZRUText className='font-medium cursor-pointer ps-1 hover:underline'>
+                                Javascript
+                              </ZRUText>
+
+                              <ZRUBox className='w-[40%] flex items-center gap-1'>
+                                <ZRUText className='font-medium'>4</ZRUText>
+                                <ZRUProgress
+                                  value={100}
+                                  size='3'
+                                  color={ZRUColorE.green}
+                                />
+                              </ZRUBox>
+                            </li>
+                          );
+                        })}
+                      </ul>
+
+                      <ZRUText className='inline-block mt-4 underline cursor-pointer hover:no-underline ms-2 text-success-dark'>
+                        Show all 10
+                      </ZRUText>
                     </ZRUBox>
-                  </ZRUAccordionContent>
-                </ZRUAccordionItem>
-              </ZRUAccordingGroup>
+
+                    {/* Soft Skills */}
+                    <ZRUBox className='relative'>
+                      <ZRUBox className='flex items-center gap-2 py-1 w-max mt-7 z-blur'>
+                        <ZRUSwitch />
+                        <ZRUText className='font-semibold'>Soft Skills</ZRUText>
+                      </ZRUBox>
+
+                      <ul className='*:py-2 mt-3 ps-1 *:flex *:items-center *:justify-between z-blur *:border-t *:border-tertiary/40 last-of-type:*:border-b'>
+                        <li>
+                          <ZRUText className='font-medium cursor-pointer ps-1 hover:underline'>
+                            React
+                          </ZRUText>
+
+                          <ZRUBox className='w-[40%] flex items-center gap-1'>
+                            <ZRUText className='font-medium'>0</ZRUText>
+                            <ZRUProgress
+                              value={0}
+                              size='3'
+                              color={ZRUColorE.green}
+                            />
+                          </ZRUBox>
+                        </li>
+
+                        <li>
+                          <ZRUText className='font-medium cursor-pointer ps-1 hover:underline'>
+                            Javascript
+                          </ZRUText>
+
+                          <ZRUBox className='w-[40%] flex items-center gap-1'>
+                            <ZRUText className='font-medium'>0</ZRUText>
+                            <ZRUProgress
+                              value={0}
+                              size='3'
+                              color={ZRUColorE.green}
+                            />
+                          </ZRUBox>
+                        </li>
+                      </ul>
+
+                      <ZRUBox className='absolute flex flex-col items-center justify-center p-5 text-white -translate-x-1/2 -translate-y-1/2 rounded-lg top-1/2 left-1/2 bg-primary w-max'>
+                        <ZRUText className='block text-lg'>
+                          Unlock
+                          <ZRUText className='mx-1 font-medium'>
+                            8 Keywords
+                          </ZRUText>
+                          to land more interviews
+                        </ZRUText>
+
+                        <ZRUButton
+                          className='w-full mt-3 rounded-full px-7'
+                          color={ZRUColorE.yellow}
+                          size='3'
+                        >
+                          Upgrade to {constants.productInfo.name}+
+                        </ZRUButton>
+                      </ZRUBox>
+                    </ZRUBox>
+                  </ZRUBox>
+                </ZRUBox>
+              </ZRUBox>
             </ZRUScrollArea>
+
+            <Outlet />
           </ZRUBox>
         </ZRUBox>
       </ZRUBox>

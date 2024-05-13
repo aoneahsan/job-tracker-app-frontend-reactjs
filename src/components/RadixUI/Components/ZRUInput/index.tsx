@@ -23,6 +23,7 @@ import ZRUBox from '../../Layout/ZRUBox';
 import ZRUText from '../../Typography/ZRUText';
 import { isZNonEmptyString } from '@/utils/helpers';
 import { ZColorEnum } from '@/utils/enums/elements.enum';
+import { ZClassNames } from '@/Packages/ClassNames';
 interface ZRUInputI {
   children?: React.ReactNode;
   className?: string;
@@ -100,7 +101,9 @@ const ZRUInput: React.FC<ZRUInputI> = ({
         </ZRUText>
       ) : null}
       <TextField.Root
-        className={inputClassName}
+        className={ZClassNames({
+          'z-date-input': type === 'date'
+        })}
         style={style}
         value={value}
         disabled={disabled}

@@ -62,7 +62,7 @@ import { FaEllipsisVertical as ZEllipsisVerticalIcon } from 'react-icons/fa6';
 import { IoEllipsisVerticalCircle as ZEllipsisVerticalCircleIcon } from 'react-icons/io5';
 import { IoIosArrowDropleft as ZArrowDropLeftIcon } from "react-icons/io";
 import { IoHomeOutline as ZHomeIcon } from "react-icons/io5";
-import { GrNotes as ZNotesIcon } from "react-icons/gr";
+import { FaRegFileAlt as ZNotesIcon } from "react-icons/fa";
 import { LuFileSpreadsheet as ZFileIcon } from "react-icons/lu";
 import { HiOutlineChartSquareBar as ZChartBarIcon } from "react-icons/hi";
 import { IoStatsChart as ZStatsChartIcon } from "react-icons/io5";
@@ -80,7 +80,8 @@ import { FaCheck as ZCheckIcon } from "react-icons/fa6";
 import { MdOutlineKeyboardArrowRight as ZArrowRightIcon } from "react-icons/md";
 import { FaRegLightbulb as ZLightbulbIcon } from "react-icons/fa";
 import { CgAttachment as ZAttachmentIcon } from "react-icons/cg";
-import { MdOutlineCheckBox as ZCheckboxOutline } from "react-icons/md";
+import { MdOutlineCheckBox as ZCheckboxOutlineIcon } from "react-icons/md";
+import { IoMdCloseCircleOutline as ZCloseOutlineIcon } from "react-icons/io";
 
 
 
@@ -183,6 +184,7 @@ export {
   ZArrowRightIcon,
   ZLightbulbIcon,
   ZAttachmentIcon,
-  ZCheckboxOutline,
+  ZCheckboxOutlineIcon,
+  ZCloseOutlineIcon,
   ZChevronForwardCircleOutline
 };

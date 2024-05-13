@@ -16,6 +16,8 @@ import {
   ZRUSeparator,
   ZRUText
 } from '@/components/RadixUI';
+import { useZNavigate } from '@/hooks/navigation.hook';
+import { AppRoutes } from '@/Routes/AppRoutes';
 
 // #endregion
 
@@ -44,6 +46,9 @@ import {
 // #endregion
 
 const JobTracker: React.FC = () => {
+  // #region Hooks
+  const navigate = useZNavigate();
+  // #endregion
   return (
     <>
       {/* Job Tracker/Pipeline Section */}
@@ -260,7 +265,18 @@ const JobTracker: React.FC = () => {
                 </div>
               </td>
 
-              <td scope='col' className='w-[11rem]'>
+              <td
+                scope='col'
+                className='w-[11rem] hover:bg-primary/10 cursor-pointer transition-all hover:underline'
+                onClick={() => {
+                  navigate({
+                    to: AppRoutes.dashboardSub.jobView.completePath,
+                    params: {
+                      jobId: '123' // will be replace with original id when backend connected
+                    }
+                  });
+                }}
+              >
                 <ZRUText className='line-clamp-2'>
                   Lorem ipsum dolor sit amet.
                 </ZRUText>

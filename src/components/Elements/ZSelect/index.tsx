@@ -37,7 +37,7 @@ import { isZNonEmptyString } from '@/utils/helpers';
 // #endregion
 
 // #region ---- Types Imports ----
-import { type ZRSelectOptions } from '@/types/elements/Select.type';
+import { type ZRSelectOptions } from '@/types/elements/select.type';
 import { type SelectComponents } from 'react-select/dist/declarations/src/components';
 type ZSelectI = {
   className?: string;

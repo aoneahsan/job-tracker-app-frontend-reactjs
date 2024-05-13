@@ -284,10 +284,50 @@ const jobTrackerViewRoute = createRoute({
   // beforeLoad: privateRouteHandler
 });
 
-/// --- -- Purchase form tree
+/// --- Purchase Job tracker view notes
+const jobTrackerViewNotesRoute = createRoute({
+  getParentRoute: () => jobTrackerViewRoute,
+  path: AppRoutes.dashboardSub.jobView.notes.path,
+  component: lazyRouteComponent(
+    async (): Promise<Record<string, unknown>> =>
+      await import('@/pages/authenticated/Dashboard/JobView/Notes')
+  )
+  // beforeLoad: privateRouteHandler
+});
+
+/// --- Purchase Job tracker view attachments
+const jobTrackerViewAttachmentsRoute = createRoute({
+  getParentRoute: () => jobTrackerViewRoute,
+  path: AppRoutes.dashboardSub.jobView.attachments.path,
+  component: lazyRouteComponent(
+    async (): Promise<Record<string, unknown>> =>
+      await import('@/pages/authenticated/Dashboard/JobView/Attachments')
+  )
+  // beforeLoad: privateRouteHandler
+});
+
+/// --- Purchase Job tracker view contacts
+const jobTrackerViewContactsRoute = createRoute({
+  getParentRoute: () => jobTrackerViewRoute,
+  path: AppRoutes.dashboardSub.jobView.contacts.path,
+  component: lazyRouteComponent(
+    async (): Promise<Record<string, unknown>> =>
+      await import('@/pages/authenticated/Dashboard/JobView/Contacts')
+  )
+  // beforeLoad: privateRouteHandler
+});
+
+/// --- -- Job tracker view form tree
+const jobTrackerViewTree = jobTrackerViewRoute.addChildren([
+  jobTrackerViewNotesRoute,
+  jobTrackerViewAttachmentsRoute,
+  jobTrackerViewContactsRoute
+]);
+
+/// --- -- Dashboard form tree
 export const dashboardTree = dashboardRoute.addChildren([
   jobTrackerRoute,
-  jobTrackerViewRoute
+  jobTrackerViewTree
 ]);
 // #endregion
 

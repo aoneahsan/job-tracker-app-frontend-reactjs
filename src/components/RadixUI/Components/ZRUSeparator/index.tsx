@@ -28,6 +28,9 @@ interface ZRUSeparatorI {
 }
 // #endregion
 
+/**
+ * A customized Radix Separator component.
+ */
 const ZRUSeparator: React.FC<ZRUSeparatorI> = (props) => {
   return <Separator {...props} />;
 };

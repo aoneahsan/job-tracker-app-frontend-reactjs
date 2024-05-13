@@ -35,5 +35,7 @@ export { default as ZRUCheckboxItem } from './Components/ZRUCheckboxGroup/Item';
 export { default as ZRUTextArea } from './Components/ZRUTextArea';
 export { default as ZRUCheckbox } from './Components/ZRUCheckbox';
 export { default as ZRUSeparator } from './Components/ZRUSeparator';
+export { default as ZRUSwitch } from './Components/ZRUSwitch';
+export { default as ZRUProgress } from './Components/ZRUProgress';
 
 // #endregion
