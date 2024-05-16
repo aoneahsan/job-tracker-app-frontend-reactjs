@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider } from '@tanstack/react-router';
 import AppRouter from './Routes';
 import FetchRequiredAppDataHOC from './HOCs/FetchRequiredAppDataHOC';
-import ZNetworkOffline from './Components/Utility/ZNetworkOffline';
+import ZNetworkOffline from './components/utility/ZNetworkOffline';
 
 // AWS Amplify
 import '@/configs/aws-amplify.config';
