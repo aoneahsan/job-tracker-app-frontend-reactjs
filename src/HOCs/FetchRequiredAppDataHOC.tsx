@@ -16,7 +16,7 @@ import {
 // #region ---- Custom Imports ----
 import constants from '@/utils/constants';
 import { Storage, isZNonEmptyString } from '@/utils/helpers';
-import { zAxiosApiRequest } from '@/utils/helpers/APIS';
+import { zAxiosApiRequest } from '@/utils/helpers/apis';
 
 // #endregion
 
@@ -26,7 +26,7 @@ import { ApiUrlEnum } from '@/utils/enums/apis.enum';
 // #endregion
 
 // #region ---- Store Imports ----
-import { ZUserRStateAtom } from '@/store/auth/user/index.recoil.ts';
+import { ZUserRStateAtom } from '@/store/auth/user/index.recoil';
 import { ZAuthTokenData } from '@/store/auth/index.recoil';
 
 // #endregion

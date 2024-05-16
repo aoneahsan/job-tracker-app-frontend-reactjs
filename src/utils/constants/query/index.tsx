@@ -1,7 +1,7 @@
 export const queryKeys = {
-  clients: {
-    list: 'z-rq-client-list',
-    get: 'z-rq-client-get'
+  jobs: {
+    list: 'z-rq-jobs-list',
+    get: 'z-rq-jobs-get'
   },
   invoice: {
     list: 'z-rq-invoice-list',

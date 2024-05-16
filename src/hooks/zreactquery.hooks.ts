@@ -13,7 +13,7 @@ import {
   reportCustomError,
   showZAlert
 } from '@/utils/helpers';
-import { zAxiosApiRequest } from '@/utils/helpers/APIS';
+import { zAxiosApiRequest } from '@/utils/helpers/apis';
 
 import {
   type QueryFilters,
@@ -27,7 +27,7 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRecoilValue } from 'recoil';
-import { ZUserRStateAtom } from '@/store/auth/user/index.recoil.ts';
+import { ZUserRStateAtom } from '@/store/auth/user/index.recoil';
 
 /**
  * The custom hook for getting data from an API using useQuery hook from react-query package.

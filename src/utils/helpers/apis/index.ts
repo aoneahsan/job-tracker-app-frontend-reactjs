@@ -46,43 +46,60 @@ export const zAxiosApiRequest = async <T>({
   const _authToken = await getAuthToken();
 
   // authToken is fount or not authenticatedRequest request then
-  if (_authToken !== undefined || !_isAuthenticatedRequest) {
-    // Creating an axios config object.
-    const reqInput: AxiosRequestConfig = {
-      method: _method,
-      data: _data,
-      url: getApiUrl(_url, _itemIds, _urlDynamicParts),
-      headers: {
-        Accept: zAxiosApiRequestContentType.Json,
-        'Content-Type': _contentType,
-        Authorization: `${constants.api.tokenPrimaryKey} ${_authToken ?? ''}`
-      }
-    };
+  // if (_authToken !== undefined || !_isAuthenticatedRequest) {
+  //   // Creating an axios config object.
+  //   const reqInput: AxiosRequestConfig = {
+  //     method: _method,
+  //     data: _data,
+  //     url: getApiUrl(_url, _itemIds, _urlDynamicParts),
+  //     headers: {
+  //       Accept: zAxiosApiRequestContentType.Json,
+  //       'Content-Type': _contentType,
+  //       Authorization: `${constants.api.tokenPrimaryKey} ${_authToken ?? ''}`
+  //     }
+  //   };
 
-    // Making axios request.
-    const _res = await axiosInstance.request(reqInput);
+  //   // Making axios request.
+  //   const _res = await axiosInstance.request(reqInput);
 
-    // retuning data of type T
-    return _res?.data as unknown as T;
+  //   // retuning data of type T
+  //   return _res?.data as unknown as T;
 
-    // else if this is an authenticatedRequest and authToken is not fount then
-  } else if (_isAuthenticatedRequest && _authToken === undefined) {
-    // Remove data from Storage.
-    await Promise.all([
-      Storage.remove(constants.localstorageKeys.userData),
-      Storage.remove(constants.localstorageKeys.authToken)
-    ]);
+  //   // else if this is an authenticatedRequest and authToken is not fount then
+  // } else if (_isAuthenticatedRequest && _authToken === undefined) {
+  //   // Remove data from Storage.
+  //   await Promise.all([
+  //     Storage.remove(constants.localstorageKeys.userData),
+  //     Storage.remove(constants.localstorageKeys.authToken)
+  //   ]);
 
-    // Redirect to login.
-    // eslint-disable-next-line
-    // redirect({
-    //   to: AppRoutes.login
-    // });
+  //   // Redirect to login.
+  //   // eslint-disable-next-line
+  //   // redirect({
+  //   //   to: AppRoutes.login
+  //   // });
 
-    window.location.href = AppRoutes.login;
-  } else {
-    throw new Error(messages.general.failed);
-  }
+  //   window.location.href = AppRoutes.login;
+  // } else {
+  //   throw new Error(messages.general.failed);
+  // }
+  // Creating an axios config object.
+  const reqInput: AxiosRequestConfig = {
+    method: _method,
+    data: _data,
+    url: getApiUrl(_url, _itemIds, _urlDynamicParts),
+    headers: {
+      Accept: zAxiosApiRequestContentType.Json,
+      'Content-Type': _contentType,
+      Authorization: `${constants.api.tokenPrimaryKey} ${_authToken ?? ''}`
+    }
+  };
+
+  // Making axios request.
+  const _res = await axiosInstance.request(reqInput);
+
+  // retuning data of type T
+  return _res?.data as unknown as T;
 };
 
 /**

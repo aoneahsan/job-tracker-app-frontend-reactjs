@@ -3,7 +3,7 @@
  */
 
 export enum RouteParams {
-  clientId = ':clientId',
+  jobId = ':jobId',
   invoiceId = ':invoiceId',
   invoiceType = ':invoiceType'
 }
@@ -21,22 +21,8 @@ export enum ApiUrlEnum {
   verifyAuthenticationStatus = '/verify-authentication-status',
   changeCredentials = '/change-credentials',
 
-  // Client
-  getClients = '/user/clients',
-  createClient = '/user/client/create',
-  viewClient = `/user/client/view/${RouteParams.clientId}`,
-  updateClient = `/user/client/update/${RouteParams.clientId}`,
-  deleteClient = `/user/client/destroy/${RouteParams.clientId}`,
-
-  // Invoice
-  getInvoices = `/user/invoice/${RouteParams.invoiceType}`,
-  createInvoice = `/user/invoice/${RouteParams.invoiceType}/create`,
-  viewInvoice = `/user/invoice/${RouteParams.invoiceType}/view/${RouteParams.invoiceId}`,
-  updateInvoice = `/user/invoice/${RouteParams.invoiceType}/update/${RouteParams.invoiceId}`,
-  deleteInvoice = `/user/invoice/${RouteParams.invoiceType}/destroy/${RouteParams.invoiceId}`,
-  // downloadInvoice = `/user/invoice/${RouteParams.invoiceType}/download/${RouteParams.invoiceId}`,
-  downloadInvoice = `/user/${RouteParams.invoiceType}/dom/${RouteParams.invoiceId}/z_kasdas`,
-  loadDownloadInvoiceView = '/request-invoice-download',
+  jobs = '/jobs',
+  jobsById = `/jobs/${RouteParams.jobId}`,
 
   // Files
   getSingleFile = '/file-upload/getSingleFileUrl',

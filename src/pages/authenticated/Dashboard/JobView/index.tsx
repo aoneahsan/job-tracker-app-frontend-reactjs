@@ -1,5 +1,5 @@
 // #region ---- Core Imports ----
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 // #endregion
 
@@ -61,6 +61,9 @@ import {
   ZCheckboxOutlineIcon
 } from '@/assets';
 import { AppRoutes } from '@/Routes/AppRoutes';
+import { useZRQGetRequest } from '@/hooks/zreactquery.hooks';
+import { ApiUrlEnum } from '@/utils/enums/apis.enum';
+import { queryKeys } from '@/utils/constants/query';
 
 // #endregion
 
@@ -68,6 +71,15 @@ const JobView: React.FC = () => {
   // #region Hooks
   const navigate = useZNavigate();
   const matchRoute = useMatchRoute();
+  // #endregion
+
+  // #region APIs
+  const { data } = useZRQGetRequest({
+    _url: ApiUrlEnum.jobs,
+    _key: [queryKeys.jobs.list]
+  });
+  console.log({ data });
+
   // #endregion
 
   // #region Functions
@@ -112,8 +124,6 @@ const JobView: React.FC = () => {
   const isJobTrackerViewAttachmentsPage = matchRoute({
     to: AppRoutes.dashboardSub.jobView.attachments.completePath
   });
-  console.log({ isJobTrackerViewNotesPage });
-  // #en
   // #endregion
 
   return (
