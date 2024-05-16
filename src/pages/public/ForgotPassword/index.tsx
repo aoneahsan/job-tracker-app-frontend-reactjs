@@ -53,7 +53,7 @@ import constants from '@/utils/constants';
 import {
   showErrorNotification,
   showSuccessNotification
-} from '@/utils/helpers/Notification';
+} from '@/utils/helpers/notification';
 import { messages } from '@/utils/messages';
 
 // #endregion
@@ -68,12 +68,12 @@ import {
 import {
   ZAwsResetPasswordStep,
   ZErrorException
-} from '@/types/apis/AWS/index.type';
+} from '@/types/apis/aws/index.type';
 
 // #endregion
 
 // #region ---- Store Imports ----
-import { ZUserRStateAtom } from '@/store/auth/user/index.recoil.ts';
+import { ZUserRStateAtom } from '@/store/auth/user/index.recoil';
 import { ZAuthTokenData } from '@/store/auth/index.recoil';
 
 // #endregion

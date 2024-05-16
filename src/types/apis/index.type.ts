@@ -1,4 +1,4 @@
-import type { ZGenericObject } from '../Global/index.type';
+import type { ZGenericObject } from '@/types/global/index.type';
 
 export enum extractInnerDataOptionsEnum {
   createRequestResponseItem = 'createRequestResponseItem',
