@@ -6,9 +6,6 @@ import AppRouter from './Routes';
 import FetchRequiredAppDataHOC from './HOCs/FetchRequiredAppDataHOC';
 import ZNetworkOffline from './components/utility/ZNetworkOffline';
 
-// AWS Amplify
-import '@/configs/aws-amplify.config';
-
 // React-toastify package css
 import 'react-toastify/dist/ReactToastify.css';
 
