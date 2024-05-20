@@ -115,6 +115,13 @@ const helmetDefaults = {
 } as const;
 
 /**
+ * Default values for the application.
+ */
+const defaultValues = {
+  noValueFound: '---'
+} as const;
+
+/**
  * Object containing various constants for the application.
  */
 const constants = {
@@ -129,7 +136,8 @@ const constants = {
   externalSites,
   mediaScales,
   helmetDefaults,
-  timeInterval
+  timeInterval,
+  defaultValues
 };
 
 export default constants;

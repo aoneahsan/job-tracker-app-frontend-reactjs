@@ -32,6 +32,7 @@ interface ZRUSelectI {
   label?: string;
   asChild?: boolean;
   className?: string;
+  labelClassName?: string;
   style?: Record<string, unknown>;
   size?: Responsive<'1' | '2' | '3'>;
   defaultOpen?: boolean;
@@ -61,19 +62,24 @@ interface ZRUSelectI {
 
   options?: Array<ZRUSelectValueI>;
   labelOrientation?: ZRUOrientationE;
+  position?: 'item-aligned' | 'popper';
 }
 // #endregion
 
 const ZRUSelect: React.FC<ZRUSelectI> = (props) => {
   return (
     <ZRUBox
-      className={ZClassNames({
+      className={ZClassNames(props?.className, {
         'flex items-center gap-1':
           props?.labelOrientation === ZRUOrientationE.horizontal
       })}
     >
       {props?.label !== undefined && props?.label?.trim()?.length > 0 ? (
-        <ZRUText as={ZRUTextAsE.label} size='1' className='block mb-px'>
+        <ZRUText
+          as={ZRUTextAsE.label}
+          size='1'
+          className={ZClassNames('block', props?.labelClassName)}
+        >
           {props?.label}
           {props?.required ? (
             <ZRUText
@@ -102,7 +108,7 @@ const ZRUSelect: React.FC<ZRUSelectI> = (props) => {
       >
         <Select.Trigger {...props?.trigger} />
 
-        <Select.Content {...props?.content}>
+        <Select.Content {...props?.content} position={props?.position}>
           {props?.options?.map((option, index) => {
             return (
               <Select.Item value={option?.value} key={index}>

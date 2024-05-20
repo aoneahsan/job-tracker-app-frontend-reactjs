@@ -40,6 +40,16 @@ export interface ZModalI {
   shouldBackdropClose?: boolean;
 }
 
+// app vise popover interface
+export interface ZPopoverI {
+  isOpen?: boolean;
+  component?: React.FC<unknown>;
+  componentProps?: ZGenericObject<unknown>;
+  containerClassName?: string;
+  width?: string;
+  height?: string;
+}
+
 // app vise blocker interface
 export interface ZAppViseBlockerI {
   shouldBlock: boolean;

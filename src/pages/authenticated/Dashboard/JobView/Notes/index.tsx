@@ -17,7 +17,7 @@ import { ZRUBox, ZRUButton, ZRUText, ZRUTextArea } from '@/components/RadixUI';
 // #endregion
 
 // #region ---- Images Imports ----
-import { ZCloseOutlineIcon, ZFileIcon } from '@/assets';
+import { ZCloseCircleOutlineIcon, ZFileIcon } from '@/assets';
 
 // #endregion
 
@@ -30,7 +30,7 @@ const Notes: React.FC = () => {
           <ZRUText className='text-xl font-medium ms-2'>Notes</ZRUText>
         </ZRUText>
 
-        <ZCloseOutlineIcon className='w-6 h-6 cursor-pointer' />
+        <ZCloseCircleOutlineIcon className='w-6 h-6 cursor-pointer' />
       </ZRUBox>
 
       <ZRUTextArea className='px-2 mt-4' size='3' />

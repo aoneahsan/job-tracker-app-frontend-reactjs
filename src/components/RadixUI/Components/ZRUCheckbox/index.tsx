@@ -28,6 +28,7 @@ interface ZRUCheckboxI {
   variant?: ZRUTriggerVariantE;
   color?: ZRUColorE;
   size?: Responsive<'1' | '2' | '3'>;
+  disabled?: boolean;
   onChange?: React.FormEventHandler<HTMLButtonElement>;
 }
 // #endregion

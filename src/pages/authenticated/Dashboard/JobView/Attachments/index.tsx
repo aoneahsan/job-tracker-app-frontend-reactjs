@@ -23,7 +23,7 @@ import { ZRUBox, ZRUText } from '@/components/RadixUI';
 // #region ---- Images Imports ----
 import {
   ZAttachmentIcon,
-  ZCloseOutlineIcon,
+  ZCloseCircleOutlineIcon,
   ZEllipsisVerticalIcon
 } from '@/assets';
 
@@ -38,7 +38,7 @@ const Attachments: React.FC = () => {
           <ZRUText className='text-xl font-medium ms-2'>Attachments</ZRUText>
         </ZRUText>
 
-        <ZCloseOutlineIcon className='w-6 h-6 cursor-pointer' />
+        <ZCloseCircleOutlineIcon className='w-6 h-6 cursor-pointer' />
       </ZRUBox>
 
       <ZRUBox className='py-3 mx-2 border-b border-tertiary/20'>

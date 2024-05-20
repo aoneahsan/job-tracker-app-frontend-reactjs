@@ -4,7 +4,8 @@ import {
   type ZModalI,
   type ZLoaderI,
   type ZSidebarI,
-  ZNetworkI
+  type ZNetworkI,
+  type ZPopoverI
 } from '@/types/global/index.type';
 import { ZColorEnum } from '@/utils/enums/elements.enum';
 
@@ -27,7 +28,15 @@ export const ZModalRStateAtom = atom<ZModalI>({
   key: 'ZModalRStateAtom_key',
   default: {
     isOpen: false,
-    color: ZColorEnum.dark
+    color: ZColorEnum.dark,
+
+  }
+});
+
+export const ZPopoverRStateAtom = atom<ZPopoverI>({
+  key: 'ZPopoverRStateAtom_key',
+  default: {
+    isOpen: false
   }
 });
 

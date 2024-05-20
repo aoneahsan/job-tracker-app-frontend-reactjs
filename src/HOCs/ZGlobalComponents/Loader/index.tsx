@@ -39,7 +39,7 @@ const ZLoader: React.FC = () => {
         'opacity-0 scale-0 z-0': ZLoaderRState?.isOpen === false
       })}
     >
-      <div className='absolute inset-0 z-20 w-full h-full opacity-60 bg-dark'></div>
+      <div className='absolute inset-0 z-20 w-full h-full opacity-60 bg-dark/80'></div>
       <div className='relative z-50 flex flex-col items-center justify-center gap-3 mt-10'>
         <ZSpinSvg className='w-[2rem!important] h-[2rem!important] text-white' />
         <p className='text-light drop-shadow-md text-[1.3rem]'>

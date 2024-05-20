@@ -9,7 +9,7 @@ import React from 'react';
 
 // #region ---- Custom Imports ----
 import { ZRUBox, ZRUText } from '@/components/RadixUI';
-import { ZCheckboxOutlineIcon, ZCloseOutlineIcon } from '@/assets';
+import { ZCheckboxOutlineIcon, ZCloseCircleOutlineIcon } from '@/assets';
 
 // #endregion
 
@@ -34,7 +34,7 @@ const CheckList: React.FC = () => {
           <ZRUText className='text-xl font-medium ms-2'>Attachments</ZRUText>
         </ZRUText>
 
-        <ZCloseOutlineIcon className='w-6 h-6 cursor-pointer' />
+        <ZCloseCircleOutlineIcon className='w-6 h-6 cursor-pointer' />
       </ZRUBox>
     </ZRUBox>
   );

@@ -15,7 +15,8 @@ const formValidations = {
   currency: 'currency is required.',
   resendCodeLimitExceeded:
     'Attempt limit exceeded, please try after some time.',
-  resendCodeSuccess: 'Confirmation code resent successfully.'
+  resendCodeSuccess: 'Confirmation code resent successfully.',
+  urlNotValid: 'Should be a valid URL'
 } as const;
 
 const auth = {
@@ -102,6 +103,19 @@ const network = {
   }
 } as const;
 
+const jobs = {
+  added: 'Job added successfully.',
+  update: 'Job updated successfully.',
+  salaryUpdated: 'Job salary updated successfully.',
+  confirmDialog: {
+    title: 'Confirm Deletion',
+    messages: `Are you sure you want to delete this job?. please type '${constants.deleteConfirmWords.global}' for confirmation.`
+  },
+  deletingLoader: 'Deleting job please wait a second...',
+  deleted: 'Job deleted successfully.'
+} as const;
+
+
 export const messages = {
   general,
   formValidations,
@@ -112,5 +126,6 @@ export const messages = {
   expense,
   login,
   register,
-  network
+  network,
+  jobs
 };

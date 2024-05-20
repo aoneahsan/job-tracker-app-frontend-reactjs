@@ -4,17 +4,16 @@ import React from 'react';
 // #endregion
 
 // #region ---- Packages Imports ----
-import { Button, DropdownMenu } from '@radix-ui/themes';
+import { DropdownMenu } from '@radix-ui/themes';
 
 // #endregion
 
 // #region ---- Custom Imports ----
-import ZRUButton from '../ZRUButton';
 
 // #endregion
 
 // #region ---- Types Imports ----
-import { type ZRUColorE, ZRUVariantE } from '@/types/radixUI/index.type';
+import { type ZRUColorE } from '@/types/radixUI/index.type';
 import { type Responsive } from '@radix-ui/themes/dist/cjs/props';
 interface ZRUDropdownMenuI {
   children?: React.ReactNode;
@@ -49,13 +48,13 @@ const ZRUDropdownMenu: React.FC<ZRUDropdownMenuI> = ({
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button variant={ZRUVariantE?.ghost}>{trigger?.children}</Button>
+        <button className='focus:outline-none'>{trigger?.children}</button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content
         style={style}
         className={className}
-        size={size}
         color={color}
+        size={size}
         highContrast={highContrast}
       >
         {children}

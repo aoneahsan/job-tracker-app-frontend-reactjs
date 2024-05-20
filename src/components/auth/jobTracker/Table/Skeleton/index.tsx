@@ -1,4 +1,5 @@
 // #region ---- Core Imports ----
+import { ZRUBox } from '@/components/RadixUI';
 import React from 'react';
 
 // #endregion
@@ -8,10 +9,6 @@ import React from 'react';
 // #endregion
 
 // #region ---- Custom Imports ----
-import ZSideMenu from './SideMenu';
-import ZLoader from './Loader';
-import ZModal from './Modal';
-import ZPopover from './Popover';
 
 // #endregion
 
@@ -27,19 +24,12 @@ import ZPopover from './Popover';
 
 // #endregion
 
-// #region ---- Types Imports ----
-
-// #endregion
-
-const ZGlobalComponents: React.FC = () => {
+const ZJobsTableSkeleton: React.FC = () => {
   return (
-    <>
-      <ZSideMenu />
-      <ZLoader />
-      <ZModal />
-      <ZPopover />
-    </>
+    <ZRUBox className='relative mt-6 overflow-x-auto border border-medium/30 sm:rounded-lg'>
+      <table className='w-full text-sm text-left text-gray-500'></table>
+    </ZRUBox>
   );
 };
 
-export default ZGlobalComponents;
+export default ZJobsTableSkeleton;

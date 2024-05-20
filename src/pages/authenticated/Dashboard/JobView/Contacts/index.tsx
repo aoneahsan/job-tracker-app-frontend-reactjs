@@ -23,7 +23,7 @@ import { ZRUBox, ZRUButton, ZRUText } from '@/components/RadixUI';
 // #region ---- Images Imports ----
 import {
   ZAddCircleOutlineIcon,
-  ZCloseOutlineIcon,
+  ZCloseCircleOutlineIcon,
   ZContactsBookIcon
 } from '@/assets';
 import { ZStandardSelect } from '@/components/Elements/ZSelect';
@@ -40,7 +40,7 @@ const Contacts: React.FC = () => {
           <ZRUText className='text-xl font-medium ms-2'>Contacts</ZRUText>
         </ZRUText>
 
-        <ZCloseOutlineIcon className='w-6 h-6 cursor-pointer' />
+        <ZCloseCircleOutlineIcon className='w-6 h-6 cursor-pointer' />
       </ZRUBox>
 
       <ZRUBox className='py-3 mx-2 border-b border-tertiary/20'>

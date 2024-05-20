@@ -27,6 +27,7 @@ interface ZRUBoxI extends ZRUStyleI {
   style?: Record<string, unknown>;
   as?: ZRUAsE;
   display?: Responsive<ZRUBoxDisplayE>;
+  onClick?: () => void;
 }
 // #endregion
 

@@ -81,7 +81,9 @@ import { MdOutlineKeyboardArrowRight as ZArrowRightIcon } from "react-icons/md";
 import { FaRegLightbulb as ZLightbulbIcon } from "react-icons/fa";
 import { CgAttachment as ZAttachmentIcon } from "react-icons/cg";
 import { MdOutlineCheckBox as ZCheckboxOutlineIcon } from "react-icons/md";
-import { IoMdCloseCircleOutline as ZCloseOutlineIcon } from "react-icons/io";
+import { IoMdCloseCircleOutline as ZCloseCircleOutlineIcon } from "react-icons/io";
+import { IoMdClose as ZCloseIcon } from "react-icons/io";
+import { BsInboxes as ZInboxesIcon } from "react-icons/bs";
 
 
 
@@ -185,6 +187,8 @@ export {
   ZLightbulbIcon,
   ZAttachmentIcon,
   ZCheckboxOutlineIcon,
-  ZCloseOutlineIcon,
+  ZCloseCircleOutlineIcon,
+  ZCloseIcon,
+  ZInboxesIcon,
   ZChevronForwardCircleOutline
 };

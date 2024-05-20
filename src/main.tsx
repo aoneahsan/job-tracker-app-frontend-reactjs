@@ -12,7 +12,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 // Custom CSS
 import './css/index.css';
-import './css/toastify.css';
+// import './css/toastify.css';
 
 // RC Slider CSS
 import 'rc-slider/assets/index.css';

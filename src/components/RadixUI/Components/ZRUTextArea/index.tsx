@@ -24,6 +24,7 @@ import {
 } from '@/types/radixUI/index.type';
 interface ZRUTextAreaI {
   className?: string;
+  labelClassName?: string;
   textAriaClassName?: string;
   textAriaStyle?: Record<string, unknown>;
   style?: Record<string, unknown>;
@@ -36,6 +37,7 @@ interface ZRUTextAreaI {
   required?: boolean;
   label?: string;
   placeholder?: string;
+  rows?: number;
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
 }
@@ -47,6 +49,7 @@ interface ZRUTextAreaI {
 const ZRUTextArea: React.FC<ZRUTextAreaI> = ({
   className,
   textAriaClassName,
+  labelClassName,
   textAriaStyle,
   style,
   value,
@@ -58,13 +61,14 @@ const ZRUTextArea: React.FC<ZRUTextAreaI> = ({
   required,
   label,
   placeholder,
+  rows,
   onChange,
   onBlur
 }) => {
   return (
     <ZRUBox className={className} style={style}>
       {isZNonEmptyString(label) ? (
-        <ZRUText as={ZRUTextAsE.label}>
+        <ZRUText as={ZRUTextAsE.label} className={labelClassName}>
           {label}
           {required ? (
             <ZRUText
@@ -89,6 +93,7 @@ const ZRUTextArea: React.FC<ZRUTextAreaI> = ({
         radius={radius}
         onChange={onChange}
         onBlur={onBlur}
+        rows={rows}
       />
     </ZRUBox>
   );

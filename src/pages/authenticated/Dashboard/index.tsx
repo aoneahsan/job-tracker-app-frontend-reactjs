@@ -13,6 +13,7 @@ import { ZRUBox, ZRUText } from '@/components/RadixUI';
 import { ZPage } from '@/components/Elements';
 import constants from '@/utils/constants';
 import { useZNavigate } from '@/hooks/navigation.hook';
+import { ZClassNames } from '@/Packages/ClassNames';
 
 // #endregion
 
@@ -38,7 +39,6 @@ import {
   ZQuestionCircleIcon
 } from '@/assets';
 import { AppRoutes } from '@/Routes/AppRoutes';
-import { ZClassNames } from '@/Packages/ClassNames';
 
 // #endregion
 

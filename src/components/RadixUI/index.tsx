@@ -37,5 +37,8 @@ export { default as ZRUCheckbox } from './Components/ZRUCheckbox';
 export { default as ZRUSeparator } from './Components/ZRUSeparator';
 export { default as ZRUSwitch } from './Components/ZRUSwitch';
 export { default as ZRUProgress } from './Components/ZRUProgress';
+export { default as ZRUDialog } from './Components/ZRUDialog';
+export { default as ZRUDialogClose } from './Components/ZRUDialog/Close';
+export { default as ZRUPopover } from './Components/ZRUPopover';
 
 // #endregion

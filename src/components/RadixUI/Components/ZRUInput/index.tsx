@@ -28,6 +28,7 @@ interface ZRUInputI {
   children?: React.ReactNode;
   className?: string;
   inputClassName?: string;
+  labelClassName?: string;
   style?: Record<string, unknown>;
   value?: string | number;
   disabled?: boolean;
@@ -67,6 +68,7 @@ const ZRUInput: React.FC<ZRUInputI> = ({
   children,
   className,
   inputClassName,
+  labelClassName,
   style,
   value,
   disabled,
@@ -87,7 +89,7 @@ const ZRUInput: React.FC<ZRUInputI> = ({
   return (
     <ZRUBox className={className}>
       {isZNonEmptyString(label) ? (
-        <ZRUText as={ZRUTextAsE.label}>
+        <ZRUText as={ZRUTextAsE.label} className={labelClassName}>
           {label}
           {required ? (
             <ZRUText
@@ -107,7 +109,7 @@ const ZRUInput: React.FC<ZRUInputI> = ({
         style={style}
         value={value}
         disabled={disabled}
-        required={required}
+        // required={required}
         placeholder={placeholder}
         size={size}
         color={color}
