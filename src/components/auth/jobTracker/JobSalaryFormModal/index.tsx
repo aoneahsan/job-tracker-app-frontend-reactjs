@@ -73,10 +73,10 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
 
   const { data: zJobData, isFetching: isZJobDataFetching } =
     useZRQGetRequest<ZJobI>({
-      _key: [queryKeys.jobs.get, jobId!],
+      _key: [queryKeys.jobs.get, jobId ?? ''],
       _url: ApiUrlEnum.jobsById,
       _urlDynamicParts: [RouteParams.jobId],
-      _itemsIds: [jobId!],
+      _itemsIds: [jobId ?? ''],
       _shouldFetchWhenIdPassed: isZNonEmptyString(jobId),
       _extractType: ZRQGetRequestExtractEnum.extractItem
     });
@@ -85,39 +85,41 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
   // #region Functions
   const formikOnSubmitHandler = useCallback(async (data: string) => {
     try {
-      let _response = await updateJobMutateAsync({
-        itemIds: [jobId!],
-        urlDynamicParts: [RouteParams.jobId],
-        requestData: data
-      });
+      if (jobId) {
+        let _response = await updateJobMutateAsync({
+          itemIds: [jobId],
+          urlDynamicParts: [RouteParams.jobId],
+          requestData: data
+        });
 
-      if (_response !== null && _response !== undefined) {
-        const _data = extractInnerData<ZJobI>(
-          _response,
-          extractInnerDataOptionsEnum.createRequestResponseItem
-        );
+        if (_response !== null && _response !== undefined) {
+          const _data = extractInnerData<ZJobI>(
+            _response,
+            extractInnerDataOptionsEnum.createRequestResponseItem
+          );
 
-        if (
-          _data !== null &&
-          _data !== undefined &&
-          isZNonEmptyString(_data?.id)
-        ) {
-          await updateRQCDataHandler({
-            key: [queryKeys.jobs.list],
-            data: _data,
-            id: jobId, // available only in edit state
-            updaterAction: ZRQUpdaterAction.replace
-          });
+          if (
+            _data !== null &&
+            _data !== undefined &&
+            isZNonEmptyString(_data?.id)
+          ) {
+            await updateRQCDataHandler({
+              key: [queryKeys.jobs.list],
+              data: _data,
+              id: jobId, // available only in edit state
+              updaterAction: ZRQUpdaterAction.replace
+            });
 
-          await updateRQCDataHandler({
-            key: [queryKeys.jobs.get, jobId!],
-            data: _data,
-            updaterAction: ZRQUpdaterAction.replace
-          });
+            await updateRQCDataHandler({
+              key: [queryKeys.jobs.get, jobId ?? ''],
+              data: _data,
+              updaterAction: ZRQUpdaterAction.replace
+            });
 
-          showSuccessNotification(messages.jobs.salaryUpdated);
+            showSuccessNotification(messages.jobs.salaryUpdated);
 
-          hideModal();
+            hideModal();
+          }
         }
       }
     } catch (error) {

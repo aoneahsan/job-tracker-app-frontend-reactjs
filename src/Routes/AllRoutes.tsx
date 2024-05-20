@@ -59,11 +59,12 @@ const publicRouteHandler = async (): Promise<void> => {
 export const homeRoute = createRoute({
   getParentRoute: () => tanstackRootRoute,
   path: AppRoutes.home,
-  component: lazyRouteComponent(
-    async (): Promise<Record<string, unknown>> =>
-      await import('@/pages/common/Home')
-  )
-  // beforeLoad: async ({ location }) => {},
+  // component: ({ navigate }) => {},
+  beforeLoad: async ({ location, navigate }) => {
+    navigate({
+      to: '/dashboard/job-tracker'
+    });
+  }
 });
 
 // --- Login
