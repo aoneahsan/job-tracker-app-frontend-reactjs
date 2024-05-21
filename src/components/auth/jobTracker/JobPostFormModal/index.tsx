@@ -132,7 +132,8 @@ const ZJobPostForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
             await updateRQCDataHandler({
               key: [queryKeys.jobs.get, jobId!],
               data: _data,
-              updaterAction: ZRQUpdaterAction.replace
+              updaterAction: ZRQUpdaterAction.updateHole,
+              extractType: ZRQGetRequestExtractEnum.extractItem
             });
           }
 

@@ -54,6 +54,7 @@ import {
   ZRQGetRequestExtractEnum,
   ZRQUpdaterAction
 } from '@/utils/enums/apis.enum';
+import { ZClassNames } from '@/Packages/ClassNames';
 
 // #endregion
 
@@ -113,7 +114,8 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
             await updateRQCDataHandler({
               key: [queryKeys.jobs.get, jobId ?? ''],
               data: _data,
-              updaterAction: ZRQUpdaterAction.replace
+              updaterAction: ZRQUpdaterAction.updateHole,
+              extractType: ZRQGetRequestExtractEnum.extractItem
             });
 
             showSuccessNotification(messages.jobs.salaryUpdated);
@@ -138,6 +140,7 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
     }),
     [zJobData]
   );
+
   // #endregion
 
   return (
@@ -151,9 +154,16 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
         </ZRUHeading>
 
         <ZRUBox
-          className='flex items-center justify-center w-8 h-8 p-1 transition-all duration-500 bg-transparent rounded-full cursor-pointer hover:bg-medium/20'
+          className={ZClassNames(
+            'flex items-center justify-center w-8 h-8 p-1 transition-all duration-500 bg-transparent rounded-full cursor-pointer hover:bg-medium/20',
+            {
+              'opacity-85 !cursor-not-allowed': isUpdateJobPending
+            }
+          )}
           onClick={() => {
-            hideModal();
+            if (!isUpdateJobPending) {
+              hideModal();
+            }
           }}
         >
           <ZCloseIcon className='w-[90%] h-[90%] text-medium' />
@@ -182,7 +192,8 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
           errors,
           handleChange,
           handleBlur,
-          handleSubmit
+          handleSubmit,
+          setFieldValue
         }) => {
           return (
             <ZFormikForm onSubmit={handleSubmit}>
@@ -243,6 +254,10 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
                     options={ZCurrenciesData}
                     label='Currency'
                     className='mt-5'
+                    value={values.currency}
+                    onValueChange={(value) => {
+                      setFieldValue('currency', value);
+                    }}
                     labelClassName='font-semibold mb-1 block text-[.8rem]'
                     position='popper'
                     trigger={{
@@ -275,6 +290,7 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
                   <>
                     <ZRUButton
                       variant={ZRUVariantE.ghost}
+                      disabled={isUpdateJobPending}
                       size='3'
                       className='font-medium me-3'
                       type='button'
@@ -284,7 +300,11 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
                     >
                       Cancel
                     </ZRUButton>
-                    <ZRUButton type='submit' className='px-4'>
+                    <ZRUButton
+                      loading={isUpdateJobPending}
+                      type='submit'
+                      className='px-4'
+                    >
                       Save Job
                     </ZRUButton>
                   </>

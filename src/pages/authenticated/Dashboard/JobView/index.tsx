@@ -1,5 +1,5 @@
 // #region ---- Core Imports ----
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 // #endregion
 
@@ -73,6 +73,8 @@ import {
   ZMailOutlineIcon,
   ZCheckboxOutlineIcon
 } from '@/assets';
+import { ZCurrenciesData } from '@/data/currencies.data';
+import { isZNonEmptyString } from '@/utils/helpers';
 
 // #endregion
 
@@ -155,6 +157,14 @@ const JobView: React.FC = () => {
     to: AppRoutes.dashboardSub.jobView.attachments.completePath
   });
   // #endregion
+
+  const _jobSalaryCurrencySymbol = useMemo(
+    () =>
+      ZCurrenciesData?.find(
+        (el) => el.value === zSelectedJobData?.salary?.currency
+      )?.symbol ?? '',
+    [zSelectedJobData]
+  );
 
   return (
     <ZRUBox className='flex items-start w-full h-full'>
@@ -276,7 +286,7 @@ const JobView: React.FC = () => {
                   {isZSelectedJobDataFetching ? (
                     <ZRUBox className='mt-2 rounded-sm w-36 h-7 bg-tertiary/20' />
                   ) : (
-                    '$278.00'
+                    `${Boolean(zSelectedJobData?.salary?.min) ? _jobSalaryCurrencySymbol + ' ' + zSelectedJobData?.salary?.min + ' - ' : ''} ${_jobSalaryCurrencySymbol} ${zSelectedJobData?.salary?.max ?? ''}`
                   )}
                 </ZRUHeading>
               </ZRUBox>
