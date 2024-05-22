@@ -23,6 +23,7 @@ export enum ApiUrlEnum {
 
   jobs = '/jobs',
   jobsById = `/jobs/${RouteParams.jobId}`,
+  jobsStatus = `/jobs/status/${RouteParams.jobId}`,
 
   // Files
   getSingleFile = '/file-upload/getSingleFileUrl',

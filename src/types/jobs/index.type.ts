@@ -1,7 +1,7 @@
 /**
  * Enums
  */
-export enum ZStatusEnum {
+export enum ZJobStatusEnum {
     bookmarked = 'bookmarked',
     applying = 'applying',
     applied = 'applied',
@@ -9,6 +9,7 @@ export enum ZStatusEnum {
     negotiating = 'negotiating',
     accepted = 'accepted',
 }
+
 export enum ZJobsTableColumnsIds {
     id = '__z_job_id__',
     title = '__z_job_title__',
@@ -34,6 +35,20 @@ export enum ZJobsTableColumnsIds {
 /**
  *  Interfaces
  */
+
+export interface jobStatusInterface {
+    currentStatus: ZJobStatusEnum;
+    booked: {
+        reviewJobPositionDetails: boolean;
+    };
+    applying: {
+        getReferral: boolean;
+        customizeResume: boolean;
+        writeCoverLetter: boolean;
+        identifyHiringManager: boolean;
+        submitApplication: boolean;
+    }
+}
 export interface ZJobI {
     id?: string;
     title?: string;
@@ -50,19 +65,7 @@ export interface ZJobI {
     };
     salaryPayPeriod?: string;
     postedDate?: string;
-    status?: {
-        currentStatus: ZStatusEnum;
-        booked: {
-            reviewJobPositionDetails: boolean;
-        };
-        applying: {
-            getReferral: boolean;
-            customizeResume: boolean;
-            writeCoverLetter: boolean;
-            identifyHiringManager: boolean;
-            submitApplication: boolean;
-        };
-    };
+    status?: jobStatusInterface;
     savedDate?: string;
     appliedDate?: string;
     followUpDate?: string;

@@ -30,6 +30,7 @@ interface ZRUCheckboxI {
   size?: Responsive<'1' | '2' | '3'>;
   disabled?: boolean;
   onChange?: React.FormEventHandler<HTMLButtonElement>;
+  onCheckedChange?(checked: boolean): void;
 }
 // #endregion
 

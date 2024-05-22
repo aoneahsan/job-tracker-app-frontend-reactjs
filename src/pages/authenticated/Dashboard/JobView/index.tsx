@@ -25,7 +25,8 @@ import {
   ZRUText
 } from '@/components/RadixUI';
 import ZJobPostForm from '@/components/auth/jobTracker/JobPostFormModal';
-import JobSalaryForm from '@/components/auth/jobTracker/JobSalaryFormModal';
+import ZJobSalaryForm from '@/components/auth/jobTracker/JobSalaryFormModal';
+import ZStatusGuidance from '@/components/auth/jobView/StatusGuidance';
 import constants from '@/utils/constants';
 import { useZNavigate } from '@/hooks/navigation.hook';
 import { AppRoutes } from '@/Routes/AppRoutes';
@@ -34,6 +35,7 @@ import { queryKeys } from '@/utils/constants/query';
 import { ZClassNames } from '@/Packages/ClassNames';
 import { useZModal } from '@/hooks/globalComponents.hook';
 import modalsConstants from '@/utils/constants/modals';
+import { ZCurrenciesData } from '@/data/currencies.data';
 
 // #endregion
 
@@ -73,18 +75,18 @@ import {
   ZMailOutlineIcon,
   ZCheckboxOutlineIcon
 } from '@/assets';
-import { ZCurrenciesData } from '@/data/currencies.data';
-import { isZNonEmptyString } from '@/utils/helpers';
 
 // #endregion
 
 const JobView: React.FC = () => {
   // #region Hooks
-  const navigate = useZNavigate();
-  const matchRoute = useMatchRoute();
   const { jobId } = useParams({
     from: AppRoutes.dashboardSub.jobView.completePath
   });
+
+  const navigate = useZNavigate();
+  const matchRoute = useMatchRoute();
+
   const { showModal: showJobEditFormModal } = useZModal({
     component: ZJobPostForm,
     width: modalsConstants.modalsWidth.ZJobPostForm,
@@ -94,7 +96,7 @@ const JobView: React.FC = () => {
   });
 
   const { showModal: showJobSalaryFormModal } = useZModal({
-    component: JobSalaryForm,
+    component: ZJobSalaryForm,
     width: modalsConstants.modalsWidth.ZJobSalaryForm,
     componentProps: {
       jobId
@@ -111,7 +113,6 @@ const JobView: React.FC = () => {
       _itemsIds: [jobId],
       _extractType: ZRQGetRequestExtractEnum.extractItem
     });
-
   // #endregion
 
   // #region Functions
@@ -141,7 +142,6 @@ const JobView: React.FC = () => {
       }
     });
   }, []);
-
   //  #endregion
 
   // #region Routes Matches
@@ -305,95 +305,8 @@ const JobView: React.FC = () => {
             </ZRUBox>
           </ZRUBox>
 
-          {/* Status progress bar */}
-          {isZSelectedJobDataFetching ? (
-            <ZRUBox className='px-5'>
-              <ZRUBox className='w-full my-3 mt-5 rounded-sm h-11 bg-tertiary/20' />
-            </ZRUBox>
-          ) : (
-            <ZRUBox className='flex items-center *:py-2 mt-5 *:flex-1 *:flex *:items-center *:justify-center *:bg-tertiary/60 gap-2 *:rounded-md overflow-hidden *:text-light/90 *:font-medium *:cursor-pointer py-3 px-5'>
-              <ZRUBox className='!bg-success-shade text-light/90 z-arrow-right-clip'>
-                <ZRUText className='mx-auto'>Bookmarked</ZRUText>
-                <ZCheckIcon className='ms-auto me-4' />
-              </ZRUBox>
-
-              <ZRUBox className='!bg-light-blue-100 !text-primary !cursor-default z-arrow-right-clip'>
-                <ZRUText className='mx-auto'>Applying</ZRUText>
-                {/* <ZCheckIcon className='ms-auto me-3' /> */}
-              </ZRUBox>
-
-              <ZRUBox className='z-arrow-right-clip'>
-                <ZRUText className='mx-auto'>Applied</ZRUText>
-                {/* <ZCheckIcon className='ms-auto me-3' /> */}
-              </ZRUBox>
-
-              <ZRUBox className='z-arrow-right-clip'>
-                <ZRUText className='mx-auto'>Interviewing</ZRUText>
-                {/* <ZCheckIcon className='ms-auto me-3' /> */}
-              </ZRUBox>
-
-              <ZRUBox className='z-arrow-right-clip'>
-                <ZRUText className='mx-auto'>Negotiating</ZRUText>
-                {/* <ZCheckIcon className='ms-auto me-3' /> */}
-              </ZRUBox>
-
-              <ZRUBox className='z-arrow-right-clip'>
-                <ZRUText className='mx-auto'>Accepted</ZRUText>
-                {/* <ZCheckIcon className='ms-auto me-3' /> */}
-              </ZRUBox>
-
-              <ZRUBox>
-                <ZRUText className='mx-auto'>Close Job</ZRUText>
-                {/* <ZCheckIcon className='ms-auto me-3' /> */}
-              </ZRUBox>
-            </ZRUBox>
-          )}
-
-          {/* Guidance */}
-          {isZSelectedJobDataFetching ? (
-            <ZRUBox className='px-5 py-3 mt-5'>
-              <ZRUBox className='w-full rounded-sm h-9 bg-tertiary/20' />
-            </ZRUBox>
-          ) : (
-            <ZRUAccordingGroup type='multiple' className='px-5 py-3 mt-5'>
-              <ZRUAccordionItem value='guidance'>
-                <ZRUAccordionTrigger className='!bg-success-dark/40 !text-success-dark'>
-                  <ZRUText className='flex items-center'>
-                    <ZLightbulbIcon className='me-1' />
-                    Guidance
-                    <ZArrowRightIcon className='w-5 h-5 ms-1' />
-                    <ZRUText className='font-normal'>
-                      Applied Step 0% Complete
-                    </ZRUText>
-                  </ZRUText>
-                </ZRUAccordionTrigger>
-                <ZRUAccordionContent className='!bg-success-dark/30 '>
-                  <ZRUBox className='flex *:h-max *:py-3 *:px-4 *:bg-white m-3'>
-                    <ZRUBox className='rounded-s-md'>
-                      {/* Select Checkbox */}
-                      <ZRUBox className='flex items-center gap-2'>
-                        <ZRUCheckbox />
-                        <ZRUText className='font-medium'>
-                          Follow up on Job Applications
-                        </ZRUText>
-                      </ZRUBox>
-                    </ZRUBox>
-                    <ZRUBox className='flex-1 rounded-e-md'>
-                      <ul className='*:mb-2 px-4 *:text-success-dark list-disc *:underline hover:*:no-underline *:cursor-pointer *:w-max'>
-                        <li>Send 1st follow up on 5/17/2024</li>
-                        <li>Send 2nd follow up on 5/24/2024</li>
-                        <li>Send 3rd follow up on 5/31/2024</li>
-                        <li>
-                          Archive job on job tracker if you haven't heard back
-                          after 3 weeks
-                        </li>
-                      </ul>
-                    </ZRUBox>
-                  </ZRUBox>
-                </ZRUAccordionContent>
-              </ZRUAccordionItem>
-            </ZRUAccordingGroup>
-          )}
+          {/* Status Bar & Guidance */}
+          <ZStatusGuidance />
 
           {/* Drawer toolbar */}
           {isZSelectedJobDataFetching ? (

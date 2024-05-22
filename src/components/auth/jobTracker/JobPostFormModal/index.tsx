@@ -43,7 +43,7 @@ import {
   ZRQGetRequestExtractEnum,
   ZRQUpdaterAction
 } from '@/utils/enums/apis.enum';
-import { ZStatusEnum, type ZJobI } from '@/types/jobs/index.type';
+import { ZJobStatusEnum, type ZJobI } from '@/types/jobs/index.type';
 import { extractInnerDataOptionsEnum } from '@/types/apis/index.type';
 import { ZRUHeadingAsE, ZRUVariantE } from '@/types/radixUI/index.type';
 import { zValidationRuleE } from '@/utils/enums/index.enum';
@@ -224,7 +224,7 @@ const ZJobPostForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
           const data = zStringify({
             ...values,
             status: {
-              currentStatus: ZStatusEnum.bookmarked
+              currentStatus: ZJobStatusEnum.bookmarked
             }
           });
           void formikOnSubmitHandler(data);

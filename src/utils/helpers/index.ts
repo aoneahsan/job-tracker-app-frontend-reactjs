@@ -424,6 +424,7 @@ export const ZPaginate = (
   return { range, rangeWithDots };
 };
 
+
 export const ZFilterData = <T>({
   data,
   filters,
@@ -596,6 +597,12 @@ export const getRemainingTimeForCountDown = (
   }
 };
 
+/**
+ * Converts an image URL to a base64-encoded string.
+ *
+ * @param imageUrl - The URL of the image to convert.
+ * @returns A Promise that resolves with the base64-encoded string of the image.
+ */
 export const imageUrlToBase64 = async (url?: string): Promise<string> => {
   try {
     if (url !== undefined && isZNonEmptyString(url)) {
@@ -667,3 +674,20 @@ export const replaceUrlDynamicParts = ({
 
   return resultUrl;
 };
+
+
+/**
+ * Converts a string to a boolean value.
+ * @param {string | boolean} value - The value to convert to a boolean.
+ * @returns {boolean} The converted boolean value.
+ */
+export const zConvertToBoolean = (value?: string | boolean): boolean => {
+  switch (value) {
+    case 'true':
+      return true;
+    case 'false':
+      return false;
+    default:
+      return Boolean(value); // handles other cases, like non-string inputs
+  }
+}

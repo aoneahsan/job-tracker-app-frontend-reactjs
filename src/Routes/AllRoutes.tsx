@@ -62,7 +62,7 @@ export const homeRoute = createRoute({
   // component: ({ navigate }) => {},
   beforeLoad: async ({ location, navigate }) => {
     navigate({
-      to: '/dashboard/job-tracker'
+      to: AppRoutes.dashboardSub.jobTracker.completePath
     });
   }
 });

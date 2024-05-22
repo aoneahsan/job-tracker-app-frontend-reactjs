@@ -58,7 +58,7 @@ import { ZClassNames } from '@/Packages/ClassNames';
 
 // #endregion
 
-const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
+const ZJobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
   hideModal,
   jobId
 }) => {
@@ -318,4 +318,4 @@ const JobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
   );
 };
 
-export default JobSalaryForm;
+export default ZJobSalaryForm;
