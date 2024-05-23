@@ -26,6 +26,7 @@ import {
 import { queryKeys } from '@/utils/constants/query';
 import { AppRoutes } from '@/Routes/AppRoutes';
 import { ZFormik } from '@/Packages/Formik';
+import { ZClassNames } from '@/Packages/ClassNames';
 import {
   isZNonEmptyString,
   reportCustomError,
@@ -37,7 +38,12 @@ import { extractInnerData } from '@/utils/helpers/apis';
 // #endregion
 
 // #region ---- Types Imports ----
-import { ZJobI, ZJobStatusEnum } from '@/types/jobs/index.type';
+import {
+  jobStatusInterface,
+  ZJobGuidance,
+  ZJobI,
+  ZJobStatusEnum
+} from '@/types/jobs/index.type';
 import { extractInnerDataOptionsEnum } from '@/types/apis/index.type';
 import {
   ApiUrlEnum,
@@ -45,6 +51,8 @@ import {
   ZRQGetRequestExtractEnum,
   ZRQUpdaterAction
 } from '@/utils/enums/apis.enum';
+import { ZRUColorE } from '@/types/radixUI/index.type';
+import { ZGenericObject } from '@/types/global/index.type';
 
 // #endregion
 
@@ -54,7 +62,6 @@ import {
 
 // #region ---- Images Imports ----
 import { ZArrowRightIcon, ZCheckIcon, ZLightbulbIcon } from '@/assets';
-import { ZClassNames } from '@/Packages/ClassNames';
 
 // #endregion
 
@@ -76,12 +83,47 @@ const ZStatusGuidance: React.FC = () => {
       _extractType: ZRQGetRequestExtractEnum.extractItem
     });
 
+  const { data: zJobGuidanceData, isFetching: isZJobGuidanceDataFetching } =
+    useZRQGetRequest<Array<ZJobGuidance>>({
+      _url: ApiUrlEnum.jobGuidance,
+      _key: [queryKeys.jobGuidance.list]
+    });
+
   const {
     mutateAsync: updateJobStatusMutateAsync,
     isPending: isUpdateJobStatusPending
   } = useZRQUpdateRequest({
     _url: ApiUrlEnum.jobsStatus
   });
+
+  // #endregion
+
+  // #region Constants
+  const formikInitialValues = useMemo(
+    () => ({
+      currentStatus:
+        zSelectedJobData?.status?.currentStatus ?? ZJobStatusEnum.bookmarked
+    }),
+    [zSelectedJobData]
+  );
+
+  const zCurrentStatus = useMemo(
+    () => zSelectedJobData?.status.currentStatus as keyof jobStatusInterface,
+    [zSelectedJobData]
+  );
+
+  const zCurrentGuidanceChecks = useMemo(
+    () => zSelectedJobData?.status[zCurrentStatus] as ZGenericObject<boolean>,
+    [zSelectedJobData]
+  );
+
+  const zJobGuidanceList = useMemo(
+    () =>
+      zJobGuidanceData?.find(
+        (el) => el.value === zSelectedJobData?.status?.currentStatus
+      )?.list,
+    [zJobGuidanceData, zSelectedJobData]
+  );
   // #endregion
 
   // #region Functions
@@ -112,7 +154,7 @@ const ZStatusGuidance: React.FC = () => {
           });
 
           await updateRQCDataHandler({
-            key: [queryKeys.jobs.get, jobId],
+            key: [queryKeys.jobs.get, jobId!],
             data: _data,
             updaterAction: ZRQUpdaterAction.updateHole,
             extractType: ZRQGetRequestExtractEnum.extractItem
@@ -123,39 +165,23 @@ const ZStatusGuidance: React.FC = () => {
       reportCustomError(error);
     }
   }, []);
-  // #endregion
 
-  // #region Constants
-  const formikInitialValues = useMemo(
-    () => ({
-      currentStatus:
-        zSelectedJobData?.status?.currentStatus ?? ZJobStatusEnum.bookmarked,
-      reviewJobPositionDetails:
-        zConvertToBoolean(
-          zSelectedJobData?.status?.booked?.reviewJobPositionDetails
-        ) ?? false,
-      getReferral:
-        zConvertToBoolean(zSelectedJobData?.status?.applying?.getReferral) ??
-        false,
-      customizeResume:
-        zConvertToBoolean(
-          zSelectedJobData?.status?.applying?.customizeResume
-        ) ?? false,
-      writeCoverLetter:
-        zConvertToBoolean(
-          zSelectedJobData?.status?.applying?.writeCoverLetter
-        ) ?? false,
-      identifyHiringManager:
-        zConvertToBoolean(
-          zSelectedJobData?.status?.applying?.identifyHiringManager
-        ) ?? false,
-      submitApplication:
-        zConvertToBoolean(
-          zSelectedJobData?.status?.applying?.submitApplication
-        ) ?? false
-    }),
-    [zSelectedJobData]
-  );
+  const zGuidanceStepCount = useCallback(() => {
+    if (zCurrentGuidanceChecks && typeof zCurrentGuidanceChecks === 'object') {
+      const totalSteps = Object.keys(zCurrentGuidanceChecks).length;
+      const completedSteps = Object.values(zCurrentGuidanceChecks).filter(
+        (value) => zConvertToBoolean(value) === true
+      ).length;
+
+      const completionPercentage = Math.round(
+        (100 / totalSteps) * completedSteps
+      );
+
+      return completionPercentage;
+    }
+
+    return 0; // Return 0 if zCurrentGuidanceChecks is undefined or not an object
+  }, [zCurrentGuidanceChecks]);
   // #endregion
 
   return (
@@ -390,7 +416,7 @@ const ZStatusGuidance: React.FC = () => {
               <ZRUBox className='px-5 py-3 mt-5'>
                 <ZRUBox className='w-full rounded-sm h-9 bg-tertiary/20' />
               </ZRUBox>
-            ) : (
+            ) : zJobGuidanceList !== undefined ? (
               <ZRUAccordingGroup
                 type='multiple'
                 className='px-5 py-3 mt-5'
@@ -403,98 +429,67 @@ const ZStatusGuidance: React.FC = () => {
                       Guidance
                       <ZArrowRightIcon className='w-5 h-5 ms-1' />
                       <ZRUText className='font-normal'>
-                        {zSelectedJobData?.status?.currentStatus ===
-                          ZJobStatusEnum.bookmarked &&
-                          `Bookmarked Steps: 0% Completed`}
-
-                        {zSelectedJobData?.status?.currentStatus ===
-                          ZJobStatusEnum.applying &&
-                          `Applying Steps: 0% Completed`}
+                        <ZRUText className='capitalize me-1'>
+                          {zCurrentStatus}
+                        </ZRUText>
+                        Steps: {zGuidanceStepCount()}% Completed
                       </ZRUText>
                     </ZRUText>
                   </ZRUAccordionTrigger>
-                  <ZRUAccordionContent className='!bg-success-dark/30 '>
-                    <ZRUBox className='flex *:h-max *:py-3 *:px-4 *:bg-white m-3'>
-                      {zSelectedJobData?.status?.currentStatus ===
-                        ZJobStatusEnum.bookmarked && (
-                        <>
-                          <ZRUBox className='rounded-s-md'>
-                            {/* Select Checkbox */}
-                            <ZRUBox className='flex items-center gap-2'>
-                              <ZRUCheckbox
-                                disabled={isUpdateJobStatusPending}
-                                onCheckedChange={(value) => {
-                                  setFieldValue(
-                                    'reviewJobPositionDetails',
-                                    value
-                                  ).then(() => submitForm());
-                                }}
-                                checked={zConvertToBoolean(
-                                  zSelectedJobData?.status?.booked
-                                    ?.reviewJobPositionDetails
-                                )}
-                              />
+                  <ZRUAccordionContent className='!bg-success-dark/30'>
+                    <ZRUAccordingGroup type='single' className='my-1'>
+                      {zJobGuidanceList?.map((el, index) => {
+                        const _value =
+                          el?.value as keyof typeof zCurrentGuidanceChecks;
+                        return (
+                          <ZRUAccordionItem
+                            value={el?.value}
+                            key={index}
+                            className='!bg-light'
+                          >
+                            <ZRUAccordionTrigger color={ZRUColorE.blue}>
                               <ZRUText className='font-medium'>
-                                Review the Job Position details
+                                {el?.label}
                               </ZRUText>
-                            </ZRUBox>
-                          </ZRUBox>
-                          <ZRUBox className='flex-1 rounded-e-md'>
-                            <ul className='*:mb-2 px-4 *:text-success-dark list-disc *:underline hover:*:no-underline *:cursor-pointer *:w-max'>
-                              <li>Send 1st follow up on 5/17/2024</li>
-                              <li>Send 2nd follow up on 5/24/2024</li>
-                              <li>Send 3rd follow up on 5/31/2024</li>
-                              <li>
-                                Archive job on job tracker if you haven't heard
-                                back after 3 weeks
-                              </li>
-                            </ul>
-                          </ZRUBox>
-                        </>
-                      )}
+                            </ZRUAccordionTrigger>
+                            <ZRUAccordionContent>
+                              <ZRUBox className='*:h-max m-3'>
+                                <ZRUBox className='flex items-center gap-2 mb-3'>
+                                  {/* Select Checkbox */}
+                                  <ZRUCheckbox
+                                    disabled={isUpdateJobStatusPending}
+                                    onCheckedChange={(value) => {
+                                      setFieldValue(el?.value, value).then(() =>
+                                        submitForm()
+                                      );
+                                    }}
+                                    className='cursor-pointer'
+                                    checked={zConvertToBoolean(
+                                      zCurrentGuidanceChecks
+                                        ? zCurrentGuidanceChecks[_value]
+                                        : false
+                                    )}
+                                  />
+                                  <ZRUText className='font-medium'>
+                                    {el?.label}
+                                  </ZRUText>
+                                </ZRUBox>
 
-                      {zSelectedJobData?.status?.currentStatus ===
-                        ZJobStatusEnum.bookmarked && (
-                        <>
-                          <ZRUBox className='rounded-s-md'>
-                            {/* Select Checkbox */}
-                            <ZRUBox className='flex items-center gap-2'>
-                              <ZRUCheckbox
-                                disabled={isUpdateJobStatusPending}
-                                onCheckedChange={(value) => {
-                                  setFieldValue(
-                                    'reviewJobPositionDetails',
-                                    value
-                                  ).then(() => submitForm());
-                                }}
-                                checked={zConvertToBoolean(
-                                  zSelectedJobData?.status?.booked
-                                    ?.reviewJobPositionDetails
-                                )}
-                              />
-                              <ZRUText className='font-medium'>
-                                Review the Job Position details
-                              </ZRUText>
-                            </ZRUBox>
-                          </ZRUBox>
-                          <ZRUBox className='flex-1 rounded-e-md'>
-                            <ul className='*:mb-2 px-4 *:text-success-dark list-disc *:underline hover:*:no-underline *:cursor-pointer *:w-max'>
-                              <li>Send 1st follow up on 5/17/2024</li>
-                              <li>Send 2nd follow up on 5/24/2024</li>
-                              <li>Send 3rd follow up on 5/31/2024</li>
-                              <li>
-                                Archive job on job tracker if you haven't heard
-                                back after 3 weeks
-                              </li>
-                            </ul>
-                          </ZRUBox>
-                        </>
-                      )}
-                    </ZRUBox>
+                                <ul className='*:mb-2 ms-1 px-4 *:text-success-dark list-disc *:underline hover:*:no-underline *:cursor-pointer *:w-max'>
+                                  {el?.items?.map((item, index) => {
+                                    return <li key={index}>{item?.text}</li>;
+                                  })}
+                                </ul>
+                              </ZRUBox>
+                            </ZRUAccordionContent>
+                          </ZRUAccordionItem>
+                        );
+                      })}
+                    </ZRUAccordingGroup>
                   </ZRUAccordionContent>
                 </ZRUAccordionItem>
               </ZRUAccordingGroup>
-            )}
+            ) : null}
           </>
         );
       }}

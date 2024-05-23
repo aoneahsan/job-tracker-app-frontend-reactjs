@@ -1,8 +1,10 @@
+import { ZJobPeriodEnum } from "@/types/jobs/index.type";
+
 const payPeriod = [
-    { value: 'hourly', label: 'Hourly' },
-    { value: 'weekly', label: 'Weekly' },
-    { value: 'monthly', label: 'Monthly' },
-    { value: 'yearly', label: 'Yearly' }
+    { value: ZJobPeriodEnum.hourly, label: 'Hourly' },
+    { value: ZJobPeriodEnum.weekly, label: 'Weekly' },
+    { value: ZJobPeriodEnum.monthly, label: 'Monthly' },
+    { value: ZJobPeriodEnum.yearly, label: 'Yearly' }
 ];
 
 export default payPeriod;

@@ -161,6 +161,41 @@ export const isZNonEmptyStrings = (
 };
 
 /**
+ * Checks if the given value is a valid number.
+ *
+ * @param value - The value to be checked. Can be number, string, undefined, or null.
+ * @param checkPositive - Optional parameter. If true, the function will also check if the value is a positive number.
+ * @returns A boolean indicating whether the value is a valid number (and optionally a positive number).
+ */
+export const isZValidNumber = (
+  value: number | string | undefined | null,
+  checkPositive: boolean = false
+): boolean => {
+  const numberValue = Number(value);
+  const isValidNumber = !isNaN(numberValue);
+
+  if (!isValidNumber) return false;
+  if (checkPositive) {
+    return numberValue > 0;
+  }
+  return true;
+};
+
+/**
+ * Checks if all the values in the given array are valid numbers.
+ *
+ * @param values - An array of values (number, string, undefined, or null) to be checked.
+ * @param checkPositive - Optional parameter. If true, the function will also check if all values are positive numbers.
+ * @returns A boolean indicating whether all values in the array are valid numbers (and optionally positive numbers).
+ */
+export const isZValidNumbers = (
+  values: Array<number | string | undefined | null>,
+  checkPositive: boolean = false
+): boolean => {
+  return values.every((value) => isZValidNumber(value, checkPositive));
+};
+
+/**
  * Converts a string to title case by adding spaces between lowercase and uppercase letters and converting to lowercase.
  *
  * @param s - The input string.

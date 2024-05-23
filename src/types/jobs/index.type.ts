@@ -10,6 +10,13 @@ export enum ZJobStatusEnum {
     accepted = 'accepted',
 }
 
+export enum ZJobPeriodEnum {
+    hourly = 'hourly',
+    weekly = 'weekly',
+    monthly = 'monthly',
+    yearly = 'yearly'
+}
+
 export enum ZJobsTableColumnsIds {
     id = '__z_job_id__',
     title = '__z_job_title__',
@@ -38,15 +45,29 @@ export enum ZJobsTableColumnsIds {
 
 export interface jobStatusInterface {
     currentStatus: ZJobStatusEnum;
-    booked: {
+    bookmarked: {
         reviewJobPositionDetails: boolean;
     };
     applying: {
         getReferral: boolean;
         customizeResume: boolean;
-        writeCoverLetter: boolean;
+        // writeCoverLetter: boolean;
         identifyHiringManager: boolean;
         submitApplication: boolean;
+    };
+    applied: {
+        followUpOnJobApplications: boolean;
+    },
+    interviewing: {
+        researchAndPrepare: boolean;
+        practiceInterviewing: boolean;
+        testYourTechVirtualOnly: boolean;
+        followUp: boolean;
+    },
+    negotiating: {
+        researchYourTargets: boolean;
+        prepareForNegotiations: boolean;
+        evaluateAnOffer: boolean;
     }
 }
 export interface ZJobI {
@@ -65,12 +86,21 @@ export interface ZJobI {
     };
     salaryPayPeriod?: string;
     postedDate?: string;
-    status?: jobStatusInterface;
+    status: jobStatusInterface;
     savedDate?: string;
     appliedDate?: string;
     followUpDate?: string;
-    excitement?: string;
+    excitement?: string | number;
 
     // For frontend only
     actions?: string;
+}
+
+export interface jobGuidanceItem { enabled: boolean, text: string, link: string };
+
+export interface jobGuidanceList { enabled: boolean, value: string, label: string, items: Array<jobGuidanceItem> }
+export interface ZJobGuidance {
+    id?: string;
+    value: string;
+    list: Array<jobGuidanceList>
 }

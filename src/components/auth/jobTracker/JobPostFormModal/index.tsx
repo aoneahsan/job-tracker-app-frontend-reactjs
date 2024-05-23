@@ -105,9 +105,10 @@ const ZJobPostForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
           urlDynamicParts: [RouteParams.jobId],
           requestData: data
         });
+      } else {
+        _response = await createJobMutateAsync(data);
       }
 
-      _response = await createJobMutateAsync(data);
       if (_response !== null && _response !== undefined) {
         const _data = extractInnerData<ZJobI>(
           _response,
@@ -127,7 +128,6 @@ const ZJobPostForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
               ? ZRQUpdaterAction.replace
               : ZRQUpdaterAction.add
           });
-
           if (isEditState) {
             await updateRQCDataHandler({
               key: [queryKeys.jobs.get, jobId!],
@@ -149,7 +149,7 @@ const ZJobPostForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
     }
   }, []);
 
-  const fromikValidateHandler = useCallback((values: ZJobI) => {
+  const fromikValidateHandler = useCallback((values: Partial<ZJobI>) => {
     try {
       const errors: { urlForOriginalPosting?: string } = {};
 
@@ -180,7 +180,7 @@ const ZJobPostForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
   // #endregion
 
   // #region Constants
-  const formikInitialValues = useMemo<ZJobI>(
+  const formikInitialValues = useMemo<Partial<ZJobI>>(
     () => ({
       title: zJobData?.title ?? '',
       urlForOriginalPosting: zJobData?.urlForOriginalPosting ?? '',
@@ -223,7 +223,7 @@ const ZJobPostForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
         onSubmit={(values) => {
           const data = zStringify({
             ...values,
-            status: {
+            status: zJobData?.status ?? {
               currentStatus: ZJobStatusEnum.bookmarked
             }
           });
@@ -234,6 +234,7 @@ const ZJobPostForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
           values,
           touched,
           errors,
+          dirty,
           handleChange,
           handleBlur,
           handleSubmit
@@ -366,7 +367,9 @@ const ZJobPostForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
                       Cancel
                     </ZRUButton>
                     <ZRUButton
-                      disabled={isCreateJobPending || isUpdateJobPending}
+                      disabled={
+                        !dirty || isCreateJobPending || isUpdateJobPending
+                      }
                       loading={isCreateJobPending || isUpdateJobPending}
                       type='submit'
                       className='px-4'

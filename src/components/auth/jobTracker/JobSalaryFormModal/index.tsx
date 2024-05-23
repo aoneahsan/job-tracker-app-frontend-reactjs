@@ -190,6 +190,7 @@ const ZJobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
           values,
           touched,
           errors,
+          dirty,
           handleChange,
           handleBlur,
           handleSubmit,
@@ -269,6 +270,10 @@ const ZJobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
                   <ZRUSelect
                     label='Salary Pay Period'
                     className='mt-5'
+                    value={values.period}
+                    onValueChange={(value) => {
+                      setFieldValue('period', value);
+                    }}
                     labelClassName='font-semibold mb-1 block text-[.8rem]'
                     position='popper'
                     options={payPeriod}
@@ -301,6 +306,7 @@ const ZJobSalaryForm: React.FC<{ hideModal: () => void; jobId?: string }> = ({
                       Cancel
                     </ZRUButton>
                     <ZRUButton
+                      disabled={!dirty}
                       loading={isUpdateJobPending}
                       type='submit'
                       className='px-4'

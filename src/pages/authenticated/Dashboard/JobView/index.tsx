@@ -10,15 +10,9 @@ import { Outlet, useMatchRoute, useParams } from '@tanstack/react-router';
 
 // #region ---- Custom Imports ----
 import {
-  ZRUAccordingGroup,
-  ZRUAccordionContent,
-  ZRUAccordionItem,
-  ZRUAccordionTrigger,
   ZRUBox,
   ZRUButton,
-  ZRUCheckbox,
   ZRUHeading,
-  ZRUInput,
   ZRUProgress,
   ZRUScrollArea,
   ZRUSwitch,
@@ -26,25 +20,42 @@ import {
 } from '@/components/RadixUI';
 import ZJobPostForm from '@/components/auth/jobTracker/JobPostFormModal';
 import ZJobSalaryForm from '@/components/auth/jobTracker/JobSalaryFormModal';
+import ZDates from '@/components/auth/jobView/Dates';
 import ZStatusGuidance from '@/components/auth/jobView/StatusGuidance';
 import constants from '@/utils/constants';
 import { useZNavigate } from '@/hooks/navigation.hook';
 import { AppRoutes } from '@/Routes/AppRoutes';
-import { useZRQGetRequest } from '@/hooks/zreactquery.hooks';
+import {
+  useZRQGetRequest,
+  useZRQUpdateRequest,
+  useZUpdateRQCacheData
+} from '@/hooks/zreactquery.hooks';
 import { queryKeys } from '@/utils/constants/query';
 import { ZClassNames } from '@/Packages/ClassNames';
 import { useZModal } from '@/hooks/globalComponents.hook';
 import modalsConstants from '@/utils/constants/modals';
 import { ZCurrenciesData } from '@/data/currencies.data';
+import ZReactStars from '@/Packages/ReactStars';
+import {
+  isZNonEmptyString,
+  isZValidNumbers,
+  reportCustomError,
+  zStringify
+} from '@/utils/helpers';
+import { extractInnerData } from '@/utils/helpers/apis';
+import { extractInnerDataOptionsEnum } from '@/types/apis/index.type';
+import { showSuccessNotification } from '@/utils/helpers/notification';
+import { messages } from '@/utils/messages';
 
 // #endregion
 
 // #region ---- Types Imports ----
-import { ZJobI } from '@/types/jobs/index.type';
+import { ZJobI, ZJobPeriodEnum } from '@/types/jobs/index.type';
 import {
   ApiUrlEnum,
   RouteParams,
-  ZRQGetRequestExtractEnum
+  ZRQGetRequestExtractEnum,
+  ZRQUpdaterAction
 } from '@/utils/enums/apis.enum';
 import {
   ZRUColorE,
@@ -63,17 +74,14 @@ import {
 
 // #region ---- Images Imports ----
 import {
-  ZArrowRightIcon,
-  ZCheckIcon,
   ZChevronForwardCircleOutline,
   ZEditIcon,
-  ZStarOutlineIcon,
-  ZLightbulbIcon,
   ZNotesIcon,
   ZAttachmentIcon,
   ZContactsBookIcon,
   ZMailOutlineIcon,
-  ZCheckboxOutlineIcon
+  ZCheckboxOutlineIcon,
+  ZAddCircleOutlineIcon
 } from '@/assets';
 
 // #endregion
@@ -86,6 +94,7 @@ const JobView: React.FC = () => {
 
   const navigate = useZNavigate();
   const matchRoute = useMatchRoute();
+  const { updateRQCDataHandler } = useZUpdateRQCacheData();
 
   const { showModal: showJobEditFormModal } = useZModal({
     component: ZJobPostForm,
@@ -113,9 +122,54 @@ const JobView: React.FC = () => {
       _itemsIds: [jobId],
       _extractType: ZRQGetRequestExtractEnum.extractItem
     });
+
+  const { mutateAsync: updateJobMutateAsync, isPending: isUpdateJobPending } =
+    useZRQUpdateRequest({
+      _url: ApiUrlEnum.jobsById
+    });
   // #endregion
 
   // #region Functions
+  const updateJobHandler = useCallback(async (data: string) => {
+    try {
+      const _response = await updateJobMutateAsync({
+        itemIds: [jobId!],
+        urlDynamicParts: [RouteParams.jobId],
+        requestData: data
+      });
+
+      if (_response !== null && _response !== undefined) {
+        const _data = extractInnerData<ZJobI>(
+          _response,
+          extractInnerDataOptionsEnum.createRequestResponseItem
+        );
+
+        if (
+          _data !== null &&
+          _data !== undefined &&
+          isZNonEmptyString(_data?.id)
+        ) {
+          await updateRQCDataHandler({
+            key: [queryKeys.jobs.list],
+            data: _data,
+            id: jobId, // available only in edit state
+            updaterAction: ZRQUpdaterAction.replace
+          });
+          await updateRQCDataHandler({
+            key: [queryKeys.jobs.get, jobId!],
+            data: _data,
+            updaterAction: ZRQUpdaterAction.updateHole,
+            extractType: ZRQGetRequestExtractEnum.extractItem
+          });
+
+          showSuccessNotification(messages.jobs.update);
+        }
+      }
+    } catch (error) {
+      reportCustomError(error);
+    }
+  }, []);
+
   const addNotesRoute = useCallback(() => {
     navigate({
       to: AppRoutes.dashboardSub.jobView.notes.completePath,
@@ -141,6 +195,31 @@ const JobView: React.FC = () => {
         jobId: jobId
       }
     });
+  }, []);
+
+  const getSalaryPeriodText = useCallback(() => {
+    try {
+      const _period = zSelectedJobData?.salary?.period;
+      if (isZNonEmptyString(_period)) {
+        switch (_period) {
+          case ZJobPeriodEnum.hourly:
+            return '/hr';
+          case ZJobPeriodEnum.weekly:
+            return '/wk';
+          case ZJobPeriodEnum.monthly:
+            return '/mth';
+          case ZJobPeriodEnum.yearly:
+            return '/yr';
+          default:
+            return '';
+        }
+      }
+
+      return '';
+    } catch (error) {
+      reportCustomError(error);
+      return '';
+    }
   }, []);
   //  #endregion
 
@@ -272,34 +351,80 @@ const JobView: React.FC = () => {
             </ZRUBox>
 
             <ZRUBox className='flex flex-col items-end'>
-              <ZRUBox className='flex items-center p-1 border border-transparent gap-14 group w-max hover:border-warning-shade/50'>
-                <ZRUBox
-                  className='flex items-center justify-center w-8 h-8 p-1 transition-all duration-500 bg-transparent rounded-full opacity-0 cursor-pointer hover:bg-warning-shade/20 me-2 group-hover:opacity-100'
-                  onClick={() => {
-                    showJobSalaryFormModal();
-                  }}
-                >
-                  <ZEditIcon className='w-[90%] h-[90%] text-warning-shade' />
-                </ZRUBox>
+              <ZRUBox
+                className={ZClassNames(
+                  'flex items-center p-1 border border-transparent gap-14 group w-max',
+                  {
+                    'hover:border-warning-shade/50': isZValidNumbers([
+                      zSelectedJobData?.salary?.min,
+                      zSelectedJobData?.salary?.max
+                    ])
+                  }
+                )}
+              >
+                {isZValidNumbers([
+                  zSelectedJobData?.salary?.min,
+                  zSelectedJobData?.salary?.max
+                ]) ? (
+                  <>
+                    <ZRUBox
+                      className='flex items-center justify-center w-8 h-8 p-1 transition-all duration-500 bg-transparent rounded-full opacity-0 cursor-pointer hover:bg-warning-shade/20 me-2 group-hover:opacity-100'
+                      onClick={() => {
+                        showJobSalaryFormModal();
+                      }}
+                    >
+                      <ZEditIcon className='w-[90%] h-[90%] text-warning-shade' />
+                    </ZRUBox>
 
-                <ZRUHeading as={ZRUHeadingAsE.h3} className='text-3xl'>
-                  {isZSelectedJobDataFetching ? (
-                    <ZRUBox className='mt-2 rounded-sm w-36 h-7 bg-tertiary/20' />
-                  ) : (
-                    `${Boolean(zSelectedJobData?.salary?.min) ? _jobSalaryCurrencySymbol + ' ' + zSelectedJobData?.salary?.min + ' - ' : ''} ${_jobSalaryCurrencySymbol} ${zSelectedJobData?.salary?.max ?? ''}`
-                  )}
-                </ZRUHeading>
+                    <ZRUHeading as={ZRUHeadingAsE.h3} className='text-3xl'>
+                      {isZSelectedJobDataFetching ? (
+                        <ZRUBox className='mt-2 rounded-sm w-36 h-7 bg-tertiary/20' />
+                      ) : (
+                        `${Boolean(zSelectedJobData?.salary?.min) ? _jobSalaryCurrencySymbol + zSelectedJobData?.salary?.min + ' - ' : ''} ${_jobSalaryCurrencySymbol}${zSelectedJobData?.salary?.max ?? ''}`
+                      )}
+                      <sub className='text-base font-thin'>
+                        {getSalaryPeriodText()}
+                      </sub>
+                    </ZRUHeading>
+                  </>
+                ) : (
+                  <ZRUButton
+                    onClick={() => {
+                      showJobSalaryFormModal();
+                    }}
+                    size='3'
+                    variant={ZRUVariantE.ghost}
+                  >
+                    <ZAddCircleOutlineIcon className='w-6 h-6' /> Add Salary
+                    Range
+                  </ZRUButton>
+                )}
               </ZRUBox>
 
               {isZSelectedJobDataFetching ? (
                 <ZRUBox className='mt-2 rounded-sm w-36 me-1 h-7 bg-tertiary/20' />
               ) : (
-                <ZRUBox className='flex items-center w-max gap-2 mt-3 *:w-5 *:h-5 *:cursor-pointer *:text-warning-shade'>
-                  <ZStarOutlineIcon />
-                  <ZStarOutlineIcon />
-                  <ZStarOutlineIcon />
-                  <ZStarOutlineIcon />
-                  <ZStarOutlineIcon />
+                <ZRUBox
+                  className={ZClassNames(
+                    'flex items-center w-max gap-2 mt-1 *:cursor-pointer *:text-warning-shade',
+                    {
+                      'animate-pulse': isUpdateJobPending
+                    }
+                  )}
+                >
+                  <ZReactStars
+                    count={5}
+                    size={28}
+                    value={zSelectedJobData?.excitement as number}
+                    disabled={isUpdateJobPending}
+                    onChange={(value) => {
+                      const data = zStringify({
+                        excitement: value
+                      });
+
+                      void updateJobHandler(data);
+                    }}
+                  />
                 </ZRUBox>
               )}
             </ZRUBox>
@@ -387,16 +512,7 @@ const JobView: React.FC = () => {
               >
                 <ZRUBox className='h-[33rem] me-2'>
                   {/* Date */}
-                  <ZRUText className='block px-4 py-3 text-xl font-medium border-b border-tertiary/20 text-tertiary'>
-                    Dates
-                  </ZRUText>
-
-                  <ZRUBox className='flex items-center gap-2 *:flex-1 px-4 pt-4 pb-6 border-b border-tertiary/20'>
-                    <ZRUInput type='date' />
-                    <ZRUInput type='date' />
-                    <ZRUInput type='date' />
-                    <ZRUInput type='date' />
-                  </ZRUBox>
+                  <ZDates />
 
                   {/* Summary */}
                   <ZRUBox className='flex items-center justify-between w-full px-4 py-3 border-b border-tertiary/20 me-3'>
@@ -413,8 +529,8 @@ const JobView: React.FC = () => {
                   </ZRUBox>
 
                   <ZRUBox className='flex items-start gap-1 py-2 *:flex-1 px-5'>
-                    <ZRUBox>
-                      {/* About the Job */}
+                    {/* <ZRUBox>
+                      {/* About the Job * /}
                       <ZRUHeading
                         as={ZRUHeadingAsE.h5}
                         className='text-[1.1rem]'
@@ -429,7 +545,7 @@ const JobView: React.FC = () => {
                         Karachi.
                       </ZRUText>
 
-                      {/* Job Responsibilities */}
+                      {/* Job Responsibilities * /}
                       <ZRUHeading
                         as={ZRUHeadingAsE.h5}
                         className='text-[1.1rem] mt-3'
@@ -445,7 +561,7 @@ const JobView: React.FC = () => {
                         </li>
                       </ul>
 
-                      {/* Requirements */}
+                      {/* Requirements * /}
                       <ZRUHeading
                         as={ZRUHeadingAsE.h5}
                         className='text-[1.1rem] mt-3'
@@ -458,6 +574,26 @@ const JobView: React.FC = () => {
 
                         <li>Strong knowledge of JavaScript fundamentals</li>
                       </ul>
+                    </ZRUBox> */}
+                    <ZRUBox>
+                      {isZNonEmptyString(zSelectedJobData?.description) ? (
+                        <ZRUText>{zSelectedJobData?.description}</ZRUText>
+                      ) : (
+                        <ZRUBox>
+                          <ZRUText className='text-[.9rem] font-medium text-base mt-2 block'>
+                            No description available
+                          </ZRUText>
+                          <ZRUButton
+                            className='mt-4'
+                            onClick={() => {
+                              showJobEditFormModal();
+                            }}
+                          >
+                            <ZAddCircleOutlineIcon className='w-5 h-5' /> Add
+                            Description
+                          </ZRUButton>
+                        </ZRUBox>
+                      )}
                     </ZRUBox>
 
                     <ZRUBox>

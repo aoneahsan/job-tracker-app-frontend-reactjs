@@ -3,6 +3,9 @@ export const queryKeys = {
     list: 'z-rq-jobs-list',
     get: 'z-rq-jobs-get'
   },
+  jobGuidance: {
+    list: 'z-rq-job-guidance-list'
+  },
   invoice: {
     list: 'z-rq-invoice-list',
     get: 'z-rq-invoice-get'
