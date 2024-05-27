@@ -1,7 +1,8 @@
 export const queryKeys = {
   jobs: {
     list: 'z-rq-jobs-list',
-    get: 'z-rq-jobs-get'
+    get: 'z-rq-jobs-get',
+    note: 'z-rq-jobs-note'
   },
   jobGuidance: {
     list: 'z-rq-job-guidance-list'

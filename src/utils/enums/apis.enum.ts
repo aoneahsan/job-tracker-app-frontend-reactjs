@@ -25,6 +25,8 @@ export enum ApiUrlEnum {
   jobsById = `/jobs/${RouteParams.jobId}`,
   jobsStatus = `/jobs/status/${RouteParams.jobId}`,
 
+  jobNote = `/jobs/${RouteParams.jobId}/notes`,
+
   jobGuidance = '/job-guidance',
 
 

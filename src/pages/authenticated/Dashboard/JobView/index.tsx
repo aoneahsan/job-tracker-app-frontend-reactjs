@@ -362,10 +362,10 @@ const JobView: React.FC = () => {
                   }
                 )}
               >
-                {isZValidNumbers([
-                  zSelectedJobData?.salary?.min,
-                  zSelectedJobData?.salary?.max
-                ]) ? (
+                {isZSelectedJobDataFetching ? null : isZValidNumbers([
+                    zSelectedJobData?.salary?.min,
+                    zSelectedJobData?.salary?.max
+                  ]) ? (
                   <>
                     <ZRUBox
                       className='flex items-center justify-center w-8 h-8 p-1 transition-all duration-500 bg-transparent rounded-full opacity-0 cursor-pointer hover:bg-warning-shade/20 me-2 group-hover:opacity-100'

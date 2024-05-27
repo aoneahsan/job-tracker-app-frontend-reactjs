@@ -96,6 +96,15 @@ export interface ZJobI {
     actions?: string;
 }
 
+export interface ZJobNote {
+    id: string;
+    jobId: string;
+    note: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string;
+}
+
 export interface jobGuidanceItem { enabled: boolean, text: string, link: string };
 
 export interface jobGuidanceList { enabled: boolean, value: string, label: string, items: Array<jobGuidanceItem> }

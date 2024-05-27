@@ -106,6 +106,7 @@ const network = {
 const jobs = {
   added: 'Job added successfully.',
   update: 'Job updated successfully.',
+  updateNote: 'Job Note updated successfully.',
   salaryUpdated: 'Job salary updated successfully.',
   confirmDialog: {
     title: 'Confirm Deletion',
