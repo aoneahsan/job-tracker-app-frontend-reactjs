@@ -10,6 +10,7 @@ import React, { useMemo, useState } from 'react';
 // #region ---- Custom Imports ----
 import { ZRUBox, ZRUText } from '@/components/RadixUI';
 import ZJobsTable from '@/components/auth/jobTracker/Table';
+import { getFirebaseFileUrl, uploadFirebaseFile } from '@/configs/firebase';
 
 // #endregion
 
@@ -26,8 +27,51 @@ import ZJobsTable from '@/components/auth/jobTracker/Table';
 // #endregion
 
 const JobTracker: React.FC = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [imageData, setImageData] = useState<string | null>(null);
+
+  const test1 = async () => {
+    if (file) {
+      const res = await uploadFirebaseFile(
+        file,
+        `uploaded-files/test-file-${Math.round(Math.random() * 10000)}.${file.name.split('.').pop()}`
+      );
+
+      console.log({ res });
+    }
+  };
+
+  const getImage = async () => {
+    const res = await getFirebaseFileUrl();
+    console.log({ res });
+    setImageData(res);
+  };
   return (
     <>
+      <ZRUBox className='p-4 mb-5 transition-all duration-200 border cursor-pointer hover:bg-light-blue-100'>
+        <ZRUText className='text-lg text-dark'>5</ZRUText>
+        <ZRUText className='block mt-1 text-sm uppercase text-dark'>
+          total jobs
+        </ZRUText>
+        <input
+          type='file'
+          name='testfile'
+          onChange={(e) => {
+            setFile(e.target.files![0]);
+          }}
+        />
+        <button onClick={test1}>okay</button>
+        <button onClick={getImage}>getImage</button>
+
+        <br />
+        <br />
+        <br />
+
+        <img
+          src={imageData ? imageData : ''}
+          alt={imageData ? 'Image Found' : 'No Image Found'}
+        />
+      </ZRUBox>
       {/* Job Tracker/Pipeline Section */}
       <ZRUBox className='flex gap-3 *:flex-1 *:flex *:flex-col *:items-center *:justify-center *:border *:border-gray-200 *:py-2 *:text-body *:overflow-hidden border-b pb-4 border-body/30 *:font-medium *:select-none'>
         {/* bookmarked */}

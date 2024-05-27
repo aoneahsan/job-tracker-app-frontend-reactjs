@@ -53,6 +53,7 @@
     "axios": "^1.7.1",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.11",
+    "firebase": "^10.12.1",
     "formik": "^2.4.6",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",

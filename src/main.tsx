@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import AppEntryPoint from './AppEntryPoint';
+import { initializeApp } from 'firebase/app';
+import { getStorage, uploadBytes, ref } from 'firebase/storage';
 
 // === Styles
 
