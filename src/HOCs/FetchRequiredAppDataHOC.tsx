@@ -17,6 +17,7 @@ import {
 import constants from '@/utils/constants';
 import { Storage, isZNonEmptyString } from '@/utils/helpers';
 import { zAxiosApiRequest } from '@/utils/helpers/apis';
+import { checkZEnv } from '@/utils/envKeys';
 
 // #endregion
 
@@ -45,7 +46,6 @@ const FetchRequiredAppDataHOC: React.FC<{ children: React.ReactNode }> = ({
   // #endregion
 
   // #region Functions
-
   const getAndStoreUserData = useCallback(async () => {
     const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
     if (
@@ -89,6 +89,11 @@ const FetchRequiredAppDataHOC: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     void getAndStoreUserData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Check if the required environment variables are set
+  useEffect(() => {
+    checkZEnv();
   }, []);
   // #endregion
 

@@ -10,7 +10,9 @@ import React, { useMemo, useState } from 'react';
 // #region ---- Custom Imports ----
 import { ZRUBox, ZRUText } from '@/components/RadixUI';
 import ZJobsTable from '@/components/auth/jobTracker/Table';
-import { getFirebaseFileUrl, uploadFirebaseFile } from '@/configs/firebase';
+import { getFirebaseFileUrl } from '@/configs/firebase';
+import { uploadZFirebaseFile } from '@/utils/helpers/firebase';
+import { ZFBStorageBucketFoldersEnum } from '@/types/firebase';
 
 // #endregion
 
@@ -32,10 +34,10 @@ const JobTracker: React.FC = () => {
 
   const test1 = async () => {
     if (file) {
-      const res = await uploadFirebaseFile(
+      const res = await uploadZFirebaseFile({
         file,
-        `uploaded-files/test-file-${Math.round(Math.random() * 10000)}.${file.name.split('.').pop()}`
-      );
+        folderName: ZFBStorageBucketFoldersEnum.jobsData
+      });
 
       console.log({ res });
     }

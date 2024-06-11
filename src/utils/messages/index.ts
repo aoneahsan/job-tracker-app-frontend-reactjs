@@ -2,7 +2,12 @@ import constants from '../constants';
 
 const general = {
   failed: 'Request Failed.',
-  blockReload: 'Are you sure you want to leave?'
+  blockReload: 'Are you sure you want to leave?',
+  attachingFile: 'Attaching file please wait a second...',
+  file: {
+    required: 'File is required.',
+    size: `File size should be less than ${constants.file.maxSize}MB.`,
+  }
 } as const;
 
 const formValidations = {
