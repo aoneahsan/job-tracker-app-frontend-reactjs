@@ -4,19 +4,17 @@ import React from 'react';
 // #endregion
 
 // #region ---- Packages Imports ----
-import { ZClassNames } from '@/Packages/ClassNames';
-import { ZDropzone, type ZDropzoneAccept } from '@/Packages/ReactDropzone';
 
 // #endregion
 
 // #region ---- Custom Imports ----
+import { ZClassNames } from '@/Packages/ClassNames';
+import { ZRUBox } from '@/components/RadixUI';
 import { isZNonEmptyString } from '@/utils/helpers';
-import ZButton from '@/components/Elements/ZButton';
 
 // #endregion
 
 // #region ---- Types Imports ----
-import { ZFill } from '@/utils/enums/elements.enum';
 
 // #endregion
 
@@ -41,9 +39,8 @@ interface ZUploadInputI {
   name?: string;
   readOnly?: boolean;
   multiple?: boolean;
-  onChange?: (files: File[]) => void;
+  onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
   style?: React.CSSProperties;
-  accept?: ZDropzoneAccept;
 }
 // #endregion
 
@@ -57,104 +54,37 @@ const ZUploadInput: React.FC<ZUploadInputI> = ({
   className,
   readOnly = false,
   multiple = true,
-  style,
-  accept = { 'image/*': ['.png', '.jpeg', '.jpg', '.gif'] }
+  style
 }) => {
   return (
-    <ZDropzone
-      multiple={multiple}
-      noClick={true}
-      noKeyboard={true}
-      accept={accept}
-      onDrop={(acceptedFiles) => {
-        if (onChange !== undefined) {
-          onChange(acceptedFiles);
-        }
-      }}
-    >
-      {({ getRootProps, getInputProps, open }) => {
-        return (
-          <>
-            <div
-              {...getRootProps({
-                className: ZClassNames(className, {
-                  'relative border-b z-input-group': true,
-                  'border-ShadowedPlum': isValid,
-                  'border-danger': !isValid,
-                  'flex items-center': true,
-                  'h-[3.5rem]': !isZNonEmptyString(String(value)),
-                  'h-full': isZNonEmptyString(String(value))
-                })
-              })}
-              style={style}
-            >
-              <input {...getInputProps()} readOnly={readOnly} />
-              <div className='w-full h-[90%] pt-5 ps-4 leading-[1.5rem] font-medium tracking-[0.15px] font-roboto-regular border-none text-[1rem] bg-transparent outline-none rounded-md transition-all text-tertiary'>
-                {/* {typeof value === "string" && isZNonEmptyString(value)
-                  ? "File attached"
-                  : typeof value === "object" && value?.length > 0
-                  ? `${value?.length} Files attached`
-                  : null} */}
+    <ZRUBox>
+      <input
+        type='file'
+        name='file-input'
+        id='file-input'
+        onChange={onChange}
+        className={ZClassNames(
+          'block w-full mt-5 text-sm border rounded-lg shadow-sm cursor-pointer border-tertiary/30 focus:z-10 focus:border-blue-500 focus:ring-blue-500 file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-2 file:bg-success-dark/90 file:cursor-pointer file:text-white',
+          className
+        )}
+      />
 
-                <div className='object-cover min-h-[90%] py-1'>
-                  {typeof value === 'string' && isZNonEmptyString(value) ? (
-                    <img
-                      alt=''
-                      src={value}
-                      onClick={(e) => {
-                        open();
-                      }}
-                      className='h-[6.25rem] w-[6.25rem]'
-                    />
-                  ) : null}
-                </div>
-              </div>
+      {isValid &&
+      ((typeof infoText === 'string' && isZNonEmptyString(infoText)) ||
+        (infoText !== null && infoText !== undefined)) ? (
+        <span className='text-[0.75rem] ps-4 text-[#666] leading-[1rem] tracking-[0.4px] font-medium font-roboto-regular'>
+          {infoText}
+        </span>
+      ) : null}
 
-              <label
-                htmlFor=''
-                className={ZClassNames({
-                  'absolute text-[1rem] transition-all -translate-y-1/2 pointer-events-none font-medium font-roboto-regular top-[58%] left-4':
-                    true,
-                  'text-tertiary': isValid,
-                  'text-danger': !isValid,
-                  'floating-label':
-                    (typeof value === 'string' && isZNonEmptyString(value)) ||
-                    (typeof value === 'object' && value?.length > 0)
-                })}
-              >
-                {label ?? 'label'}
-              </label>
-
-              <ZButton
-                className='uppercase h-max w-[12.5rem!important] z-text-size-point-8125rem pt-[6px!important] pb-[4px!important] px-[0rem!important] me-4'
-                fill={ZFill.outline}
-                onClick={(e) => {
-                  open();
-                }}
-              >
-                Upload Logo
-              </ZButton>
-            </div>
-
-            {!isValid &&
-            ((typeof errorNode === 'string' && isZNonEmptyString(errorNode)) ||
-              (errorNode !== null && errorNode !== undefined)) ? (
-              <span className='text-[0.75rem] ps-4 leading-[1rem] tracking-[0.4px] font-medium font-roboto-regular'>
-                {errorNode}
-              </span>
-            ) : null}
-
-            {isValid &&
-            ((typeof infoText === 'string' && isZNonEmptyString(infoText)) ||
-              (infoText !== null && infoText !== undefined)) ? (
-              <span className='text-[0.75rem] ps-4 text-[#666] leading-[1rem] tracking-[0.4px] font-medium font-roboto-regular'>
-                {infoText}
-              </span>
-            ) : null}
-          </>
-        );
-      }}
-    </ZDropzone>
+      {!isValid &&
+      ((typeof errorNode === 'string' && isZNonEmptyString(errorNode)) ||
+        (errorNode !== null && errorNode !== undefined)) ? (
+        <span className='text-[0.75rem] ps-2 leading-[1rem] tracking-[0.4px] font-medium font-roboto-regular text-danger'>
+          {errorNode}
+        </span>
+      ) : null}
+    </ZRUBox>
   );
 };
 

@@ -11,6 +11,23 @@ import { Dialog } from '@capacitor/dialog';
 import dayjs from 'dayjs';
 import { zAxiosApiRequestContentType } from '@/types/global/zapi-hooks.type';
 
+
+/**
+ * Generates a unique random key.
+ *
+ * @returns {string} A unique random key.
+ */
+export const getZUniqueKey = (): string => {
+  // Get the current timestamp and convert it to a base-36 string
+  const head = Date.now().toString(36);
+
+  // Generate a random number, convert it to a base-36 string, and remove the leading "0."
+  const tail = Math.random().toString(36).substr(2);
+
+  // Concatenate the timestamp string and the random string, and return it
+  return head + tail;
+};
+
 /**
  * A utility function that logs a message and returns void.
  */

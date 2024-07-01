@@ -15,6 +15,13 @@ const timeInterval = {
 } as const;
 
 /**
+ * Files
+ */
+const file = {
+  maxSize: 2.5 // 2.5 * 1024 * 1024 => 2.5MB
+} as const
+
+/**
  * Company Details
  */
 export const companyBusinessDetails = {
@@ -137,7 +144,7 @@ const constants = {
   mediaScales,
   helmetDefaults,
   timeInterval,
-  defaultValues
+  defaultValues, file
 };
 
 export default constants;

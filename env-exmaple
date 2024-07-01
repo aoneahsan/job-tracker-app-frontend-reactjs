@@ -2,8 +2,16 @@ GENERATE_SOURCEMAP=false
 VITE_CRYPTO_SECRET=''
 
 # Frontend configuration
-
 VITE_TITLE="Drop hunt hub"
 VITE_API_URL='http://localhost:8000/api'
 VITE_API_URL_PROD='We need to provide the backend API url of the production app, "{domain}/api" and the rest will get handled by the frontend app.'
 
+# Firebase configuration
+VITE_FB_API_KEY=''
+VITE_FB_AUTH_DOMAIN=''
+VITE_FB_DB_URL='' # Database URL
+VITE_FB_PROJECT_ID=''
+VITE_FB_STORAGE_BUCKET=''
+VITE_FB_MS_ID='' # Messaging Sender ID
+VITE_FB_APP_ID=''
+VITE_FB_MEASUREMENT_ID=''
