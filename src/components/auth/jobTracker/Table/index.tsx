@@ -15,7 +15,6 @@ import {
 // #region ---- Custom Imports ----
 import {
   ZRUBox,
-  ZRUButton,
   ZRUCheckbox,
   ZRUSelect,
   ZRUSeparator,
@@ -62,6 +61,7 @@ import {
   ZInboxesIcon
 } from '@/assets';
 import modalsConstants from '@/utils/constants/modals';
+import { ZButton } from 'zaions-react-ui-kit'
 // #endregion
 
 const ZJobsTable: React.FC = () => {
@@ -315,7 +315,7 @@ const ZJobsTable: React.FC = () => {
         cell: (row) => {
           return (
             <ZRUBox className='flex items-center justify-center w-full gap-2 line-clamp-2'>
-              <ZRUButton
+              <ZButton
                 color={ZRUColorE.violet}
                 onClick={() => {
                   showJobFormModal({
@@ -326,8 +326,8 @@ const ZJobsTable: React.FC = () => {
                 }}
               >
                 Edit
-              </ZRUButton>
-              <ZRUButton
+              </ZButton>
+              <ZButton
                 color={ZRUColorE.tomato}
                 onClick={async () => {
                   const { value } = await showZConfirm({
@@ -340,7 +340,7 @@ const ZJobsTable: React.FC = () => {
                 }}
               >
                 Delete
-              </ZRUButton>
+              </ZButton>
             </ZRUBox>
           );
         }
@@ -383,13 +383,13 @@ const ZJobsTable: React.FC = () => {
           />
 
           {/* Edit Button */}
-          <ZRUButton
+          <ZButton
             variant={ZRUVariantE.outline}
             disabled={isZJobsDataFetching}
           >
             <ZEditIcon className='w-4 h-4' />
             Status
-          </ZRUButton>
+          </ZButton>
 
           {/* Separator */}
           <ZRUSeparator
@@ -399,23 +399,23 @@ const ZJobsTable: React.FC = () => {
           />
 
           {/* Archive Button */}
-          <ZRUButton
+          <ZButton
             variant={ZRUVariantE.outline}
             disabled={isZJobsDataFetching}
           >
             <ZArchiveIcon className='w-4 h-4' />
             Archive
-          </ZRUButton>
+          </ZButton>
 
           {/* Delete Button */}
-          <ZRUButton
+          <ZButton
             variant={ZRUVariantE.outline}
             color={ZRUColorE.tomato}
             disabled={isZJobsDataFetching}
           >
             <ZTrashBinSvg className='w-4 h-4' />
             Delete
-          </ZRUButton>
+          </ZButton>
         </ZRUBox>
 
         <ZRUBox className='flex items-center gap-2'>
@@ -444,14 +444,14 @@ const ZJobsTable: React.FC = () => {
             }}
             disabled={isZJobsDataFetching}
           ></ZRUSelect>
-          <ZRUButton
+          <ZButton
             disabled={isZJobsDataFetching}
             onClick={() => {
               showJobFormModal();
             }}
           >
             <ZAddCircleOutlineIcon className='w-5 h-5' /> Add a New Job
-          </ZRUButton>
+          </ZButton>
         </ZRUBox>
       </ZRUBox>
 
