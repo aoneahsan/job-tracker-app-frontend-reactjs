@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
-import { type ZFilterOptions, type ZPaginationInfoI } from '@/types/auth/index.type';
+import {
+  type ZFilterOptions,
+  type ZPaginationInfoI
+} from '@/types/auth/index.type';
 import { messages } from '@/utils/messages';
 import { ZValidator } from '@/Packages/Validator';
 import constants from '@/utils/constants';
@@ -10,7 +13,6 @@ import { Preferences } from '@capacitor/preferences';
 import { Dialog } from '@capacitor/dialog';
 import dayjs from 'dayjs';
 import { zAxiosApiRequestContentType } from '@/types/global/zapi-hooks.type';
-
 
 /**
  * Generates a unique random key.
@@ -476,7 +478,6 @@ export const ZPaginate = (
   return { range, rangeWithDots };
 };
 
-
 export const ZFilterData = <T>({
   data,
   filters,
@@ -727,7 +728,6 @@ export const replaceUrlDynamicParts = ({
   return resultUrl;
 };
 
-
 /**
  * Converts a string to a boolean value.
  * @param {string | boolean} value - The value to convert to a boolean.
@@ -742,4 +742,4 @@ export const zConvertToBoolean = (value?: string | boolean): boolean => {
     default:
       return Boolean(value); // handles other cases, like non-string inputs
   }
-}
+};
