@@ -378,7 +378,7 @@ const Register: React.FC = () => {
 
   const pageHelmet = useMemo(
     () => ({
-      title: `${constants.productInfo.name} - Register page - Zaions`
+      title: `${constants.productInfo.name} -    e - Zaions`
     }),
     []
   );

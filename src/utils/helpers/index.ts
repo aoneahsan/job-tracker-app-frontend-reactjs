@@ -478,6 +478,18 @@ export const ZPaginate = (
   return { range, rangeWithDots };
 };
 
+/**
+ * Filters an array of data based on search criteria provided in the filters.
+ * 
+ * @template T - The type of the data being filtered.
+ * 
+ * @param {Object} params - The parameters for filtering data.
+ * @param {T} params.data - The data to be filtered.
+ * @param {ZFilterOptions} params.filters - The filter options to apply.
+ * @param {string | string[]} [params.searchKey] - The key(s) to search within the data.
+ * 
+ * @returns {Array<(T & unknown[])[number]>} The filtered data.
+ */
 export const ZFilterData = <T>({
   data,
   filters,
@@ -543,87 +555,58 @@ export const ZFilterAndPaginateData = <T>({
     canGoNext: true,
     canGoPrevious: true
   };
-  let _data = null;
+  let _data = ZFilterData({
+    data,
+    filters,
+    searchKey
+  });
 
-  if (Array.isArray(data) && data?.length > 0) {
-    _data = [...data];
+  const _pages = ZTotalPages(_data?.length, filters?.itemPerPage);
 
-    if (filters?.search?.trim()?.length && searchKey !== undefined) {
-      _data = _data?.filter((_item) => {
-        if (typeof searchKey === 'string') {
-          if (searchKey in _item) {
-            return String(_item[searchKey])
-              ?.trim()
-              ?.toLocaleLowerCase()
-              ?.includes(filters?.search ?? '');
-          }
-        } else if (Array.isArray(searchKey)) {
-          return searchKey?.some((_key) => {
-            if (_key in _item) {
-              return String(_item[_key])
-                ?.trim()
-                ?.toLowerCase()
-                ?.includes(filters?.search?.trim() ?? '');
-            }
-            return false; // Key not found in item
-          });
-        }
+  const { rangeWithDots } = ZPaginate(_paginationInfo?.currentPage, _pages);
 
-        return false;
-      });
+  _paginationInfo.range = rangeWithDots;
+
+  if (filters?.itemPerPage > 0) {
+    if (_paginationInfo?.currentPage === _pages || !_data?.length) {
+      _paginationInfo.canGoNext = false;
+    }
+    if (_paginationInfo?.currentPage < 2) {
+      _paginationInfo.canGoPrevious = false;
     }
 
-    _data = ZFilterData({
-      data: _data,
-      filters,
-      searchKey
-    });
-
-    const _pages = ZTotalPages(_data?.length, filters?.itemPerPage);
-
-    const { rangeWithDots } = ZPaginate(_paginationInfo?.currentPage, _pages);
-
-    _paginationInfo.range = rangeWithDots;
-
-    if (filters?.itemPerPage > 0) {
-      if (_paginationInfo?.currentPage === _pages || !_data?.length) {
-        _paginationInfo.canGoNext = false;
-      }
-      if (_paginationInfo?.currentPage < 2) {
-        _paginationInfo.canGoPrevious = false;
-      }
-
-      if (filters?.itemPerPage >= _data?.length) {
-        _paginationInfo.currentPage = 1;
-      } else if (_paginationInfo.currentPage > _pages) {
-        _paginationInfo.currentPage = _pages;
-      }
-      // pagination info
-      _paginationInfo.from =
-        (_paginationInfo?.currentPage - 1) * filters?.itemPerPage + 1;
-
-      _paginationInfo.to = Math.min(
-        _paginationInfo?.currentPage * filters?.itemPerPage,
-        _data?.length
-      );
-
-      if (filters?.itemPerPage >= _data?.length) {
-        _paginationInfo.from = 1;
-      }
-      // item to skip
-      const _itemsToSkip =
-        filters?.itemPerPage * (_paginationInfo?.currentPage - 1);
-      _data = _data?.slice(_itemsToSkip).slice(0, filters?.itemPerPage);
+    if (filters?.itemPerPage >= _data?.length) {
+      _paginationInfo.currentPage = 1;
+    } else if (_paginationInfo.currentPage > _pages) {
+      _paginationInfo.currentPage = _pages;
     }
+    // pagination info
+    _paginationInfo.from =
+      (_paginationInfo?.currentPage - 1) * filters?.itemPerPage + 1;
+
+    _paginationInfo.to = Math.min(
+      _paginationInfo?.currentPage * filters?.itemPerPage,
+      _data?.length
+    );
+
+    if (filters?.itemPerPage >= _data?.length) {
+      _paginationInfo.from = 1;
+    }
+    // item to skip
+    const _itemsToSkip =
+      filters?.itemPerPage * (_paginationInfo?.currentPage - 1);
+    _data = _data?.slice(_itemsToSkip).slice(0, filters?.itemPerPage);
   }
 
   return { _data, _paginationInfo };
 };
 
 /**
- * this function will give the remaining time for count down component present in link-in-bio blocks.
- * @param countDownTimeFinishDate type string
- * @returns remaining time in milliseconds.
+ * Calculates the remaining time in milliseconds for a countdown based on the provided end date.
+ *
+ * @param {string | undefined} countDownTimeFinishDate - The end date for the countdown in string format.
+ * 
+ * @returns {number} The remaining time in milliseconds. If the date is invalid or not provided, returns 0.
  */
 export const getRemainingTimeForCountDown = (
   countDownTimeFinishDate: string | undefined
